@@ -1,7 +1,7 @@
 process DOWNLOAD_GENOMES {
     tag "${taxid}"
     cache 'lenient'
-    label 'ncbi'
+    label 'phyloconstructor'
 
     input:
     val(taxid)

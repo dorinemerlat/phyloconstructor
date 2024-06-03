@@ -1,6 +1,6 @@
 process BUSCO {
     tag "${id}_${dataset}_${mode}"
-    cpus 20
+    cpus 30
     memory '50 GB'
     time '2d'
     label 'busco'

@@ -1,7 +1,7 @@
 process DOWNLOAD_TSA {
     tag "${taxid}"
     cache 'lenient'
-    label 'ncbi'
+    label 'phyloconstructor'
 
     input:
     tuple val(taxid), val(ncbi_api_key) 

@@ -29,6 +29,7 @@ def transpose_channel_4_args(channel) {
         .map { taxid, csv, fastq1, fastq2 -> [taxid, fastq1, fastq2] }
         .transpose()
         .map { taxid, fastq1, fastq2 -> [fasta.getBaseName(), fastq1, fastq2] }
+        .filter { it[0] != "0000" }
 }
 
 def get_busco_channel(sequences, busco_downloads, busco_dataset, mode) {
@@ -50,7 +51,7 @@ workflow PHYLOCONSTRUCTOR {
 
     // Download genomes for the studies group 
     DOWNLOAD_GENOMES(all_without_models)
-    // genomes = transpose_channel_3_args(DOWNLOAD_GENOMES.out)
+    genomes = transpose_channel_3_args(DOWNLOAD_GENOMES.out)
 
     // Download tsa for the studies group
     DOWNLOAD_TSA(all_without_models_with_ncbi_key)
@@ -59,18 +60,19 @@ workflow PHYLOCONSTRUCTOR {
     
     // Download SRA for the studies group
     DOWNLOAD_SRA(all_without_models_with_ncbi_key)
-    // sra = transpose_channel_4_args(DOWNLOAD_SRA.out)
-    // ASSEMBLE_SRA(sra)
-    
-    // // concatenate all transcripts files
-    // tsa.concat(ASSEMBLE_SRA.out).sey { transcripts }
+    sra = transpose_channel_4_args(DOWNLOAD_SRA.out)
+    TRIMMOMATIC(sra)
+    TRINITY(TRIMMOMATIC.out)
+
+    // concatenate all transcripts files
+    REFORMAT_FASTA.out.concat(TRINITY.out).sey { transcripts }
 
     // BUSCO
     DOWNLOAD_BUSCO_DATASETS( Channel.from(params.busco_dataset) )
 
-    // BUSCO_PROTEINS(get_busco_channel(proteomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "proteins"))
-    // BUSCO_GENOMES(get_busco_channel(genomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "genome"))
-    // BUSCO_TRANSCRIPTOMES(get_busco_channel(REFORMAT_FASTA.out, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
+    BUSCO_PROTEINS(get_busco_channel(proteomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "proteins"))
+    BUSCO_GENOMES(get_busco_channel(genomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "genome"))
+    BUSCO_TRANSCRIPTOMES(get_busco_channel(transcripts, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
 
     // Add more processes as needed for alignment, concatenation, etc.
 

@@ -1,7 +1,7 @@
 process DOWNLOAD_SRA {
     tag "$taxid"
     cache 'lenient'
-    label 'ncbi'
+    label 'phyloconstructor'
 
     input:
     tuple val(taxid), val(ncbi_api_key) 
@@ -28,7 +28,7 @@ process DOWNLOAD_SRA {
         efetch -format runinfo < esearch.out | awk -F','  'BEGIN {OFS=","} {print \$28,\$1}' > ${taxid}_sra.csv
 
         tail -n +2 ${taxid}_sra.csv | cut -d ',' -f 2 > sra.accession
-        prefetch --option-file sra.accession
+        prefetch -f ALL --option-file sra.accession
 
         srr_directories=\$(find . -type d -name 'SRR*')
 

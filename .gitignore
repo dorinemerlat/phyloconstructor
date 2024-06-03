@@ -12,3 +12,7 @@ out*
 null*
 workflows/phyloconstructor.nf.save
 
+UP000694941/*
+busco.sbatch
+ifb_core.config
+log/*
