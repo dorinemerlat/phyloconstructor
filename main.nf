@@ -18,10 +18,10 @@ nextflow.enable.dsl = 2
 */
 
 include { PHYLOCONSTRUCTOR  } from './workflows/phyloconstructor'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
+// include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
+// include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
 
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
+// include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,7 +32,7 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_phyl
 // TODO nf-core: Remove this line if you don't need a FASTA file
 //   This is an example of how to use getGenomeAttribute() to fetch parameters
 //   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
+// params.fasta = getGenomeAttribute('fasta')
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,21 +45,7 @@ params.fasta = getGenomeAttribute('fasta')
 //
 workflow NFCORE_PHYLOCONSTRUCTOR {
 
-    take:
-    samplesheet // channel: samplesheet read in from --input
-
-    main:
-
-    //
-    // WORKFLOW: Run pipeline
-    //
-    PHYLOCONSTRUCTOR (
-        samplesheet
-    )
-
-    emit:
-    multiqc_report = PHYLOCONSTRUCTOR.out.multiqc_report // channel: /path/to/multiqc_report.html
-
+    PHYLOCONSTRUCTOR()
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,39 +56,39 @@ workflow NFCORE_PHYLOCONSTRUCTOR {
 workflow {
 
     main:
+    NFCORE_PHYLOCONSTRUCTOR()
+    // //
+    // // SUBWORKFLOW: Run initialisation tasks
+    // //
+    // PIPELINE_INITIALISATION (
+    //     params.version,
+    //     params.help,
+    //     params.validate_params,
+    //     params.monochrome_logs,
+    //     args,
+    //     params.outdir,
+    //     params.input
+    // )
 
-    //
-    // SUBWORKFLOW: Run initialisation tasks
-    //
-    PIPELINE_INITIALISATION (
-        params.version,
-        params.help,
-        params.validate_params,
-        params.monochrome_logs,
-        args,
-        params.outdir,
-        params.input
-    )
+    // //
+    // // WORKFLOW: Run main workflow
+    // //
+    // NFCORE_PHYLOCONSTRUCTOR (
+    //     PIPELINE_INITIALISATION.out.samplesheet
+    // )
 
-    //
-    // WORKFLOW: Run main workflow
-    //
-    NFCORE_PHYLOCONSTRUCTOR (
-        PIPELINE_INITIALISATION.out.samplesheet
-    )
-
-    //
-    // SUBWORKFLOW: Run completion tasks
-    //
-    PIPELINE_COMPLETION (
-        params.email,
-        params.email_on_fail,
-        params.plaintext_email,
-        params.outdir,
-        params.monochrome_logs,
-        params.hook_url,
-        NFCORE_PHYLOCONSTRUCTOR.out.multiqc_report
-    )
+    // //
+    // // SUBWORKFLOW: Run completion tasks
+    // //
+    // PIPELINE_COMPLETION (
+    //     params.email,
+    //     params.email_on_fail,
+    //     params.plaintext_email,
+    //     params.outdir,
+    //     params.monochrome_logs,
+    //     params.hook_url,
+    //     NFCORE_PHYLOCONSTRUCTOR.out.multiqc_report
+    // )
 }
 
 /*

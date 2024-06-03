@@ -1,0 +1,7 @@
+name: jq
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - anaconda::jq=1.7.1

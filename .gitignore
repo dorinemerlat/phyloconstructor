@@ -6,3 +6,9 @@ results/
 testing/
 testing*
 *.pyc
+cache*
+nextflow.sbatch
+out*
+null*
+workflows/phyloconstructor.nf.save
+

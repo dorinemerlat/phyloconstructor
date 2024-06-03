@@ -1,98 +1,78 @@
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+include { DOWNLOAD_PROTEOMES            } from "../modules/local/download_proteomes"
+include { DOWNLOAD_GENOMES              } from "../modules/local/download_genomes"
+include { DOWNLOAD_TSA                  } from "../modules/local/download_tsa"
+include { DOWNLOAD_SRA                  } from "../modules/local/download_sra"
+include { ASSEMBLE_SRA                  } from "../modules/local/assemble_sra"
+include { BUSCO as BUSCO_PROTEINS       } from "../modules/local/busco"
+include { BUSCO as BUSCO_GENOMES        } from "../modules/local/busco"
+include { BUSCO as BUSCO_TRANSCRIPTOMES } from "../modules/local/busco"
+include { DOWNLOAD_BUSCO_DATASETS       } from "../modules/local/download_busco_datasets"
+include { REFORMAT_FASTA                } from "../modules/local/reformat_fasta"
 
-include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-validation'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_phyloconstructor_pipeline'
+params.taxid = "61985"
+params.outgroup_uniprot = "7227,6945,6669"
+params.outgroup_all = "6850,438506,1519145"
+params.threshold = 70
+params.ncbi_api_key = "01679e044efe7ad60b87d93a1bb9085f7b09"
+params.busco_dataset = "arthropoda_odb10"
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN MAIN WORKFLOW
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
 
-workflow PHYLOCONSTRUCTOR {
-
-    take:
-    ch_samplesheet // channel: samplesheet read in from --input
-
-    main:
-
-    ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
-
-    //
-    // MODULE: Run FastQC
-    //
-    FASTQC (
-        ch_samplesheet
-    )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
-
-    //
-    // Collate and save software versions
-    //
-    softwareVersionsToYAML(ch_versions)
-        .collectFile(
-            storeDir: "${params.outdir}/pipeline_info",
-            name: 'nf_core_pipeline_software_mqc_versions.yml',
-            sort: true,
-            newLine: true
-        ).set { ch_collated_versions }
-
-    //
-    // MODULE: MultiQC
-    //
-    ch_multiqc_config        = Channel.fromPath(
-        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ?
-        Channel.fromPath(params.multiqc_config, checkIfExists: true) :
-        Channel.empty()
-    ch_multiqc_logo          = params.multiqc_logo ?
-        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
-        Channel.empty()
-
-    summary_params      = paramsSummaryMap(
-        workflow, parameters_schema: "nextflow_schema.json")
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
-
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
-        file(params.multiqc_methods_description, checkIfExists: true) :
-        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description                = Channel.value(
-        methodsDescriptionText(ch_multiqc_custom_methods_description))
-
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_methods_description.collectFile(
-            name: 'methods_description_mqc.yaml',
-            sort: true
-        )
-    )
-
-    MULTIQC (
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
-    )
-
-    emit:
-    multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
+def transpose_channel_3_args(channel) {
+    return channel
+        .map { taxid, csv, fasta -> [taxid, fasta] }
+        .transpose()
+        .map { taxid, fasta -> [fasta.getBaseName(), fasta] }
 }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+def transpose_channel_4_args(channel) {
+    return channel
+        .map { taxid, csv, fastq1, fastq2 -> [taxid, fastq1, fastq2] }
+        .transpose()
+        .map { taxid, fastq1, fastq2 -> [fasta.getBaseName(), fastq1, fastq2] }
+}
+
+def get_busco_channel(sequences, busco_downloads, busco_dataset, mode) {
+    return sequences.combine(busco_downloads).map {id, files, busco -> [id, files, busco_dataset, mode, busco]}
+}
+
+workflow PHYLOCONSTRUCTOR {
+    model_outgroups = Channel.from(params.outgroup_uniprot.split(','))
+    short_distance_outgroups = Channel.from(params.outgroup_all.split(','))
+    taxid = Channel.from(params.taxid)
+
+    all = taxid.concat(model_outgroups, short_distance_outgroups)
+    all_without_models = taxid.concat(short_distance_outgroups)
+    all_without_models_with_ncbi_key = all_without_models.map { taxid -> [taxid, params.ncbi_api_key] }
+
+    // Download proteomes for outgroups
+    DOWNLOAD_PROTEOMES(all)
+    proteomes = transpose_channel_3_args(DOWNLOAD_PROTEOMES.out)
+
+    // Download genomes for the studies group 
+    DOWNLOAD_GENOMES(all_without_models)
+    // genomes = transpose_channel_3_args(DOWNLOAD_GENOMES.out)
+
+    // Download tsa for the studies group
+    DOWNLOAD_TSA(all_without_models_with_ncbi_key)
+    tsa = transpose_channel_3_args(DOWNLOAD_TSA.out)
+    REFORMAT_FASTA(tsa)
+    
+    // Download SRA for the studies group
+    DOWNLOAD_SRA(all_without_models_with_ncbi_key)
+    // sra = transpose_channel_4_args(DOWNLOAD_SRA.out)
+    // ASSEMBLE_SRA(sra)
+    
+    // // concatenate all transcripts files
+    // tsa.concat(ASSEMBLE_SRA.out).sey { transcripts }
+
+    // BUSCO
+    DOWNLOAD_BUSCO_DATASETS( Channel.from(params.busco_dataset) )
+
+    // BUSCO_PROTEINS(get_busco_channel(proteomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "proteins"))
+    // BUSCO_GENOMES(get_busco_channel(genomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "genome"))
+    // BUSCO_TRANSCRIPTOMES(get_busco_channel(REFORMAT_FASTA.out, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
+
+    // Add more processes as needed for alignment, concatenation, etc.
+
+}
+

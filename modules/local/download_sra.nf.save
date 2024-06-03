@@ -1,0 +1,28 @@
+process DOWNLOAD_SRA {
+    tag "$taxid"
+    cache 'lenient'
+    label 'sratools'
+
+    input:
+    tuple val(taxid), path(csv)
+
+    output:
+    tuple val(taxid), path(csv), path("*_1.fastq"), path("*_2.fastq")
+
+    script:
+    """
+    tail -n +2 $csv | cut -d ',' -f 2 > sra.accession
+    prefetch --option-file sra.accession
+
+    srr_directories=\$(find . -type d -name 'SRR*')
+
+    for srr in \${srr_directories}; do
+        fasterq-dump --split-files \${srr}
+    done
+    """
+
+    stub:
+    """
+    touch sra_1.fastq sra_2.fastq
+    """
+}
