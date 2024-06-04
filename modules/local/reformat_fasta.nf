@@ -9,11 +9,11 @@ process REFORMAT_FASTA {
 
     script:
     """
-    sed -i "s|/|_|g" $fasta > ${id}_reformat.fasta
+    sed "s|/|_|g" $fasta > ${id}_reformat.fasta
     """
 
     stub:
     """
-    ls
+    touch ${id}_reformat.fasta
     """
 }

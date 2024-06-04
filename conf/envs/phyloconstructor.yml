@@ -1,0 +1,16 @@
+name: cd-hit
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - anaconda::cd-hit=4.8.1
+  - anaconda::ncbi-datasets-cli=v16.18.0
+  - anaconda::jq=1.7.1
+  - anaconda::entrez-direct=16.2
+  - anaconda::sra-tools=3.1.0
+  - anaconda::trinity=date.2011_11_26
+  - anaconda::iqtree=2.3.4
+  - anaconda::trimmomatic=0.39
+  - anaconda::mafft=7.525
+  - anaconda::unzip=6.0

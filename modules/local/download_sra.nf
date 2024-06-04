@@ -25,7 +25,8 @@ process DOWNLOAD_SRA {
 
     count=\$(grep "<Count>" esearch.out |cut -d '>' -f 2 |cut -d '<' -f1)
     if [[ \$count != 0 ]] ; then
-        efetch -format runinfo < esearch.out | awk -F','  'BEGIN {OFS=","} {print \$28,\$1}' > ${taxid}_sra.csv
+        efetch -format runinfo < esearch.out | awk -F','  'BEGIN {OFS=","} {print \$28,\$1}' > 
+        sed -i "s/TaxID,Run/organism,sra/g" ${taxid}_sra.csv
 
         tail -n +2 ${taxid}_sra.csv | cut -d ',' -f 2 > sra.accession
         prefetch -f ALL --option-file sra.accession
