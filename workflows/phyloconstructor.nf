@@ -92,11 +92,10 @@ workflow PHYLOCONSTRUCTOR {
 
     // BUSCO
     DOWNLOAD_BUSCO_DATASETS( Channel.from(params.busco_dataset) )
-
-    // BUSCO_PROTEINS(get_busco_channel(proteomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "proteins"))
-    // BUSCO_GENOMES(get_busco_channel(genomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "genome"))
+    BUSCO_PROTEINS(get_busco_channel(proteomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "proteins"))
+    BUSCO_GENOMES(get_busco_channel(genomes, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "genome"))
     // // BUSCO_TRANSCRIPTOMES(get_busco_channel(transcripts, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
-    // BUSCO_TRANSCRIPTOMES(get_busco_channel(REFORMAT_FASTA.out, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
+    BUSCO_TRANSCRIPTOMES(get_busco_channel(REFORMAT_FASTA.out, DOWNLOAD_BUSCO_DATASETS.out, params.busco_dataset, "transcriptome"))
 
     // // get the taxid for each file
     // get_csv_3_args(DOWNLOAD_PROTEOMES)
