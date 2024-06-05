@@ -14,7 +14,7 @@ process DOWNLOAD_TSA {
     export NCBI_API_KEY=$ncbi_api_key
 
     { # try a first time
-        esearch -db nuccore -query '(txid${taxid}[Organism:exp]) AND "tsa master"[Properties]' > esearch.out
+        esearch -db nuccore -query "(txid${taxid}[Organism:exp]) AND \\"tsa master\\"[Properties]" > esearch.out
 
     } || { # try a second time
         sleep \$(shuf -i 5-30 -n 1)

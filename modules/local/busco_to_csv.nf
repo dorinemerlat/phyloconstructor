@@ -1,13 +1,13 @@
 process BUSCO_TO_CSV {
-    tag "${id}_${dataset}_${mode}"
-    label 'jq'
+    tag "${type}"
+    label 'phyloconstructor'
     scratch false
 
     input:
-    tuple val(id), val(dataset), val(mode), path(json)
+    tuple val(taxid), val(id), path(json), val(type)
 
     output:
-    tuple val(dataset), val(mode), path("busco_${id}_${dataset}_${mode}.csv")
+    tuple val(id), path("busco_${id}.csv")
 
     script:
     """
@@ -17,12 +17,12 @@ process BUSCO_TO_CSV {
         busco_res=\$(jq -r '.results | [.Complete, ."Single copy", ."Multi copy", .Fragmented, .Missing, .n_markers] | @csv' $json )
     fi 
     
-    echo \$busco_res | awk -v id=$id -v mode=$mode -v dataset=$dataset 'BEGIN {print "id,mode,dataset,complete,single_copy,multi_copyfragmented,missing,n_markers"} {print id "," mode "," dataset "," \$0}' \
-            > busco_${id}_${dataset}_${mode}.csv
+    echo \$busco_res | awk -v id=$id -v type=$type 'BEGIN {print "id,type_data,complete,single_copy,multi_copyfragmented,missing,n_markers"} {print id "," type "," \$0}' \
+            > busco_${id}.csv
     """
 
     stub:
     """
-    touch busco_${id}_${dataset}_${mode}.csv
+    touch busco_${id}.csv
     """
 }

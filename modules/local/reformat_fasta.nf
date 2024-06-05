@@ -1,5 +1,6 @@
 process REFORMAT_FASTA {
     tag "${id}"
+    label 'bioawk'
 
     input:
     tuple val(id), path(fasta) 
@@ -9,7 +10,9 @@ process REFORMAT_FASTA {
 
     script:
     """
-    sed "s|/|_|g" $fasta > ${id}_reformat.fasta
+        bioawk -c fastx '\$name !~ /isoform/ {print ">"\$name; print \$seq}' $fasta | fold -w 60 \
+            | sed "s|/|_|g"  \
+            > ${id}_reformat.fasta
     """
 
     stub:

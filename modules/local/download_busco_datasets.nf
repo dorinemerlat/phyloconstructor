@@ -2,7 +2,6 @@ process DOWNLOAD_BUSCO_DATASETS {
     tag "datasets"
     cache 'lenient'
     label 'busco'
-    scratch false 
 
     input:
     val(list_datasets)
