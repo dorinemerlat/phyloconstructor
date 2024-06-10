@@ -23,7 +23,7 @@ process DOWNLOAD_REFSEQ_PROTEOMES {
         # get all accession where proteins are available
         if [ -s ncbi_dataset/data/*/protein.faa ]; then
             for set in \$(ls ncbi_dataset/data/*/protein.faa); do
-                name=\$(echo \$set |cut -d '/' -f 3)
+                name=\$(echo \$set |cut -d '/' -f 3 |cut -d '.' -f 1 )
                 echo \$name >> ${taxid}_refseq_prot.accession
             done
 

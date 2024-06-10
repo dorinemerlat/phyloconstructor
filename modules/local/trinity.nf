@@ -1,15 +1,15 @@
 process TRINITY {
-    tag "id"
+    tag "$id"
     cpus 40
     memory "20 GB"
     time '5d'
-    label 'phyloconstructor'
+    label 'trinity'
 
     input:
     tuple val(id), path(fastq1), path(fastq2)
 
     output:
-    tuple val(id), path("trinity_${specie_name}.Trinity.fasta")
+    tuple val(id), path("trinity_${id}.Trinity.fasta")
 
     script:
     """
@@ -21,7 +21,7 @@ process TRINITY {
     fastq2_comma=\$(replace_spaces_with_commas $fastq2)
     memory=\$(echo $task.memory | sed 's/ GB/G/')
 
-    Trinity --seqType fq --left \${fastq1_comma} --right \${fastq2_comma} --output trinity_${specie_name} --CPU $task.cpus --max_memory \$memory
+    Trinity --seqType fq --left \${fastq1_comma} --right \${fastq2_comma} --output trinity_${id} --CPU $task.cpus --max_memory \$memory --trimmomatic
     """
 
     stub:

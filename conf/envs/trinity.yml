@@ -1,0 +1,7 @@
+name: trinity
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - anaconda::trinity=date.2011_11_26

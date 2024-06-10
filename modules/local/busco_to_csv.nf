@@ -1,7 +1,6 @@
 process BUSCO_TO_CSV {
     tag "${type}"
     label 'phyloconstructor'
-    scratch false
 
     input:
     tuple val(taxid), val(id), path(json), val(type)

@@ -13,12 +13,12 @@ process TRIMMOMATIC {
 
     script:
     """
-    trimmomatic PE -threads 20 -basein ${fastq1} -baseout ${id}.trim \
-        -baseout ${id}_paired.fq.gz ${id}_1_paired.fa ${id}_1_unpaired.fa ${id}_2_paired.fa ${id}_2_unpaired.fa \
+    TrimmomaticPE -threads ${task.cpus} -basein ${fastq1} ${fastq2} \
+        -baseout ${id}_1P.fq.gz ${id}_1P.fa.gz ${id}_1U.fa.gz ${id}_2P.fq.gz ${id}_2U.fq.gz \
         ILLUMINACLIP:TruSeq3-PE.fa:2:30:10:2:True LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
     
-    cat ${id}_1_paired.fa ${id}_1_unpaired.fa > ${id}_1_trim.fa
-    cat ${id}_2_paired.fa ${id}_2_unpaired.fa > ${id}_2_trim.fa
+    zcat ${id}_1P.fa.gz ${id}_1U.fa.gz > ${id}_1_trim.fa
+    zcat ${id}_2P.fq.gz ${id}_2U.fq.gz > ${id}_2_trim.fa
     """
 
     stub:
