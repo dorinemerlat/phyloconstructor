@@ -10,7 +10,6 @@ include { DOWNLOAD_GENOMES                          } from "../../modules/local/
 include { DOWNLOAD_TSA                              } from "../../modules/local/download_tsa"
 include { DOWNLOAD_SRA                              } from "../../modules/local/download_sra"
 include { TRINITY                                   } from "../../modules/local/trinity"
-// include { TRIMMOMATIC                               } from "../../modules/local/trimmomatic"
 include { CD_HIT_EST as CD_HIT_EST_TSA              } from "../../modules/local/cd_hit_est"
 include { CD_HIT_EST as CD_HIT_EST_SRA              } from "../../modules/local/cd_hit_est"
 include { REFORMAT_FASTA as REFORMAT_GENOMES        } from "../../modules/local/reformat_fasta"
@@ -91,7 +90,6 @@ workflow DOWNLOAD_DATA {
 
         // Download SRA for the studies group
         DOWNLOAD_SRA(all_without_models_with_ncbi_key)
-        // TRIMMOMATIC(transpose_channel_4_args(DOWNLOAD_SRA.out))
         TRINITY(transpose_channel_4_args(DOWNLOAD_SRA.out))
         REFORMAT_SRA(TRINITY.out)
         CD_HIT_EST_SRA(REFORMAT_SRA.out)
