@@ -1,9 +1,10 @@
 process TRINITY {
     tag "$id"
     cpus 40
-    memory "20 GB"
+    memory "50 GB"
     time '5d'
     label 'trinity'
+    maxRetries 0
 
     input:
     tuple val(id), path(fastq1), path(fastq2)
@@ -19,7 +20,9 @@ process TRINITY {
 
     fastq1_comma=\$(replace_spaces_with_commas $fastq1)
     fastq2_comma=\$(replace_spaces_with_commas $fastq2)
-    memory=\$(echo $task.memory | sed 's/ GB/G/')
+    memory='${task.memory}'
+    memory=\${memory%B}
+    memory=\${memory// /}
 
     Trinity --seqType fq --left \${fastq1_comma} --right \${fastq2_comma} --output trinity_${id} --CPU $task.cpus --max_memory \$memory --trimmomatic
     """

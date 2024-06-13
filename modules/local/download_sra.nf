@@ -11,21 +11,26 @@ process DOWNLOAD_SRA {
 
     script:
     """
+    search_sra() {
+        local taxid="\$1"
+        esearch -db sra -query "((((txid\${taxid}[Organism:exp]) AND \\"paired\\"[Layout]) AND \\"illumina\\"[Platform]) AND \\"rna data\\"[Filter]) AND \\"filetype fastq\\"[Properties]" \
+            > esearch.out
+    }
+
+
     export NCBI_API_KEY=$ncbi_api_key
 
     { # try a first time
-         esearch -db sra -query '((((txid${taxid}[Organism:exp]) AND "paired"[Layout]) AND "illumina"[Platform]) AND "rna data"[Filter]) AND "filetype fastq"[Properties]' \
-            > esearch.out
+        search_sra ${taxid}
 
     } || { # try a second time
         sleep \$(shuf -i 5-30 -n 1)
-        esearch -db sra -query '((((txid${taxid}[Organism:exp]) AND "paired"[Layout]) AND "illumina"[Platform]) AND "rna data"[Filter]) AND "filetype fastq"[Properties]' \
-            > esearch.out
+        search_sra ${taxid}
     }
 
     count=\$(grep "<Count>" esearch.out |cut -d '>' -f 2 |cut -d '<' -f1)
     if [[ \$count != 0 ]] ; then
-        efetch -format runinfo < esearch.out | awk -F','  'BEGIN {OFS=","} {print \$28,\$1}' > 
+        efetch -format runinfo < esearch.out | awk -F','  'BEGIN {OFS=","} {print \$28,\$1}' > ${taxid}_sra.csv
         sed -i "s/TaxID,Run/organism,sra/g" ${taxid}_sra.csv
 
         tail -n +2 ${taxid}_sra.csv | cut -d ',' -f 2 > sra.accession
