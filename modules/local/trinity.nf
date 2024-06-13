@@ -1,7 +1,7 @@
 process TRINITY {
     tag "$id"
     cpus 40
-    memory "50 GB"
+    memory "100 GB"
     time '5d'
     label 'trinity'
     maxRetries 0
