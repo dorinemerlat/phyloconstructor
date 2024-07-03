@@ -19,6 +19,7 @@ include { REFORMAT_FASTA as REFORMAT_TSA            } from "../../modules/local/
 include { DOWNLOAD_BUSCO_DATASETS                   } from "../../modules/local/download_busco_datasets"
 include { GET_TAXID                                 } from "../../modules/local/get_taxid"
 include { GET_MARKER_NUMBER                         } from "../../modules/local/get_marker_number"
+include { CALCULATE_MEMORY_FOR_TRINITY              } from "../../modules/local/calculate_memory_for_trinity"
 
 
 def transpose_channel_3_args(channel) {
@@ -90,7 +91,14 @@ workflow DOWNLOAD_DATA {
 
         // Download SRA for the studies group
         DOWNLOAD_SRA(all_without_models_with_ncbi_key)
-        TRINITY(transpose_channel_4_args(DOWNLOAD_SRA.out))
+        sra = transpose_channel_4_args(DOWNLOAD_SRA.out)
+        
+        CALCULATE_MEMORY_FOR_TRINITY(sra)
+        sra.join(CALCULATE_MEMORY_FOR_TRINITY.out)
+            .map { taxid, fastq1, fastq2, memory -> [taxid, fastq1, fastq2, memory.readLines()[0]] }
+            .set { sra_with_memory }
+
+        TRINITY(sra_with_memory)
         REFORMAT_SRA(TRINITY.out)
         CD_HIT_EST_SRA(REFORMAT_SRA.out)
 

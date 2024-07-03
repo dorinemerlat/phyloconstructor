@@ -1,10 +1,10 @@
 process BUSCO {
     tag "${id}"
     cpus 30
-    memory '50 GB'
+    memory {"${50 + (100 * (task.attempt - 1))} GB"}
     time '2d'
     label 'busco'
-    stageOutMode 'move'
+    maxRetries 5
 
     input:
     tuple val(id), path(sequences), val(dataset), val(mode), path(busco_downloads), val(priority)
