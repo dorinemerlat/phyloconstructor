@@ -1,0 +1,15 @@
+taxid,name,fasta
+1232801,Amphibalanus amphitrite,/shared/projects/metainvert/phyloconstructor2/data/outgroups/amphibalanus_amphitrite.fa
+94029,Argiope bruennichi,/shared/projects/metainvert/phyloconstructor2/data/outgroups/argiope_bruennichi.fa
+120091,Centruroides vittatus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/centruroides_vittatus.fa
+6669,Daphnia pulex,/shared/projects/metainvert/phyloconstructor2/data/outgroups/daphnia_pulex.fa
+7227,Drosophila melanogaster,/shared/projects/metainvert/phyloconstructor2/data/outgroups/drosophila_melanogaster.fa
+95602,Eriocheir sinensis,/shared/projects/metainvert/phyloconstructor2/data/outgroups/eriocheir_sinensis.fa
+158441,Folsomia candida,/shared/projects/metainvert/phyloconstructor2/data/outgroups/folsomia_candida.fa
+197161,Ischnura elegans,/shared/projects/metainvert/phyloconstructor2/data/outgroups/ischnura_elegans.fa
+6945,Ixodes scapularis,/shared/projects/metainvert/phyloconstructor2/data/outgroups/ixodes_scapularis.fa
+2943436,Paramacrobiotus metropolitanus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/paramacrobiotus_metropolitanus.fa
+40932,Rhopalosiphum padi,/shared/projects/metainvert/phyloconstructor2/data/outgroups/rhopalosiphum_padi.fa
+7010,Schistocerca gregaria,/shared/projects/metainvert/phyloconstructor2/data/outgroups/schistocerca_gregaria.fa
+6853,Tachypleus tridentatus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/tachypleus_tridentatus.fa
+6832,Tigriopus californicus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/tigriopus_californicus.fa

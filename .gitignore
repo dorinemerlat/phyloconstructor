@@ -1,0 +1,12 @@
+old/*
+cache/*
+logs/*
+log_phyloconstructor/*
+data/*
+AMAS/
+AMAS/*
+cache/*
+nextflow.sbatch
+.nextflow.log*
+.nextflow/*
+tmp/
