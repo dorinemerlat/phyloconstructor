@@ -1,6 +1,6 @@
 process FETCH_NCBI_ASSEMBLIES {
     tag ""
-
+    
     input:
     val taxid
 

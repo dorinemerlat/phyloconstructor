@@ -8,7 +8,6 @@ taxid,name,fasta
 158441,Folsomia candida,/shared/projects/metainvert/phyloconstructor2/data/outgroups/folsomia_candida.fa
 197161,Ischnura elegans,/shared/projects/metainvert/phyloconstructor2/data/outgroups/ischnura_elegans.fa
 6945,Ixodes scapularis,/shared/projects/metainvert/phyloconstructor2/data/outgroups/ixodes_scapularis.fa
-2943436,Paramacrobiotus metropolitanus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/paramacrobiotus_metropolitanus.fa
 40932,Rhopalosiphum padi,/shared/projects/metainvert/phyloconstructor2/data/outgroups/rhopalosiphum_padi.fa
 7010,Schistocerca gregaria,/shared/projects/metainvert/phyloconstructor2/data/outgroups/schistocerca_gregaria.fa
 6853,Tachypleus tridentatus,/shared/projects/metainvert/phyloconstructor2/data/outgroups/tachypleus_tridentatus.fa

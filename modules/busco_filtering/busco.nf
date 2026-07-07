@@ -1,6 +1,6 @@
 process BUSCO {
     tag "${specie}/${source}/${data_id}"
-    stageInMode 'copy'
+    scratch true 
 
     cpus { mode == 'genome' ? 6 : 10 }
     memory {
@@ -30,14 +30,7 @@ process BUSCO {
     def prefix = "${specie}.${source}.${data_id}"
 
     """
-    set -euo pipefail
-
     module load busco
-
-    export TMPDIR="\$PWD/tmp"
-    mkdir -p "\$TMPDIR"
-    export TMP="\$TMPDIR"
-    export TEMP="\$TMPDIR"
 
     sed 's|/|_|g' ${fasta} > ${specie}_${source}_${data_id}.fasta
 

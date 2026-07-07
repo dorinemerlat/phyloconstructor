@@ -1,7 +1,7 @@
 process TRANSDECODER {
     tag "${specie}"
     cpus 2
-    memory { "${4 + (4 * (task.attempt - 1))} GB" }
+    memory { "${20 + (4 * (task.attempt - 1))} GB" }
     time '20h'
     maxRetries 5
 

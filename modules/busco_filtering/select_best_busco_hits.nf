@@ -1,11 +1,11 @@
 process SELECT_BEST_BUSCO_HITS {
-    tag "${specie}"
+    tag "${label}/${specie}"
 
     input:
-    tuple val(taxid), val(specie), path(full_tables)
+    tuple val(label), val(taxid), val(specie), path(full_tables)
 
     output:
-    tuple val(taxid), val(specie), path("${specie}_complete_table.tsv")
+    tuple val(label), val(taxid), val(specie), path("${specie}_complete_table.tsv")
 
     script:
     """

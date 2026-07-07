@@ -1,10 +1,59 @@
 #!/usr/bin/env python3
 
 import argparse
-from pathlib import Path
 
 import pandas as pd
 import matplotlib.pyplot as plt
+
+
+def plot_heatmap(summary, args, output_suffix, title):
+    pivot_og = summary.pivot(
+        index="species_presence_threshold",
+        columns="busco_complete_threshold",
+        values="n_orthogroups",
+    )
+
+    pivot_sp = summary.pivot(
+        index="species_presence_threshold",
+        columns="busco_complete_threshold",
+        values="n_species",
+    )
+
+    fig, ax = plt.subplots(figsize=(9, 7))
+
+    im = ax.imshow(pivot_og.values, aspect="auto", origin="lower")
+
+    ax.set_xticks(range(len(pivot_og.columns)))
+    ax.set_xticklabels(pivot_og.columns)
+    ax.set_yticks(range(len(pivot_og.index)))
+    ax.set_yticklabels(pivot_og.index)
+
+    ax.set_xlabel("BUSCO completeness threshold per species (%)")
+    ax.set_ylabel("BUSCO presence threshold across species (%)")
+    ax.set_title(title)
+
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label("Number of orthogroups")
+
+    for i in range(pivot_og.shape[0]):
+        for j in range(pivot_og.shape[1]):
+            og = int(pivot_og.iloc[i, j])
+            sp = int(pivot_sp.iloc[i, j])
+            ax.text(
+                j,
+                i,
+                f"{og}\n({sp} sp.)",
+                ha="center",
+                va="center",
+                fontsize=7,
+            )
+
+    plt.tight_layout()
+
+    for ext in ["pdf", "png", "svg"]:
+        plt.savefig(f"{args.output}_{output_suffix}.{ext}", dpi=300)
+
+    plt.close()
 
 
 def main():
@@ -21,7 +70,6 @@ def main():
 
     data = pd.concat(tables, ignore_index=True)
 
-    # Remove exact duplicated BUSCO hits
     dedup_columns = [
         "specie_taxid",
         "specie_name",
@@ -36,7 +84,7 @@ def main():
 
     data = data.drop_duplicates(
         subset=dedup_columns,
-        keep="first"
+        keep="first",
     ).copy()
 
     after = len(data)
@@ -48,15 +96,15 @@ def main():
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
 
-    thresholds = range(40, 101, 10)
+    thresholds = range(0, 101, 10)
     summary_rows = []
 
-    # Une espèce = taxid si disponible, sinon nom
     data["species_key"] = data["specie_taxid"].astype(str)
-    data.loc[data["species_key"].isin(["", "nan", "None"]), "species_key"] = data["specie_name"]
+    data.loc[data["species_key"].isin(["", "nan", "None"]), "species_key"] = data[
+        "specie_name"
+    ]
 
     for busco_threshold in thresholds:
-        # Complétude BUSCO par espèce
         species_busco_counts = (
             data.groupby("species_key")["busco_id"]
             .nunique()
@@ -80,7 +128,6 @@ def main():
         for species_threshold in thresholds:
             if n_species_after_busco_filter == 0:
                 filtered = data_species_filtered.iloc[0:0].copy()
-                selected_buscos = set()
             else:
                 busco_species_counts = (
                     data_species_filtered.groupby("busco_id")["species_key"]
@@ -96,7 +143,8 @@ def main():
 
                 selected_buscos = set(
                     busco_species_counts.loc[
-                        busco_species_counts["species_percentage"] >= species_threshold,
+                        busco_species_counts["species_percentage"]
+                        >= species_threshold,
                         "busco_id",
                     ]
                 )
@@ -131,52 +179,32 @@ def main():
             )
 
     summary = pd.DataFrame(summary_rows)
+
     summary_file = f"{args.output}_summary.tsv"
     summary.to_csv(summary_file, sep="\t", index=False)
 
-        # Plot 1: heatmap orthogroups with species annotation
-    pivot_og = summary.pivot(
-        index="species_presence_threshold",
-        columns="busco_complete_threshold",
-        values="n_orthogroups",
+    # Heatmap 1: full 0-100% range
+    plot_heatmap(
+        summary=summary,
+        args=args,
+        output_suffix="heatmap",
+        title="Orthogroups retained across threshold combinations",
     )
 
-    pivot_sp = summary.pivot(
-        index="species_presence_threshold",
-        columns="busco_complete_threshold",
-        values="n_species",
+    # Heatmap 2: zoom on 50-100% range for both axes
+    summary_zoom = summary[
+        (summary["busco_complete_threshold"] >= 50)
+        & (summary["species_presence_threshold"] >= 50)
+    ].copy()
+
+    plot_heatmap(
+        summary=summary_zoom,
+        args=args,
+        output_suffix="heatmap_zoom_50_100",
+        title="Orthogroups retained across threshold combinations (50-100% zoom)",
     )
 
-    fig, ax = plt.subplots(figsize=(9, 7))
-
-    im = ax.imshow(pivot_og.values, aspect="auto", origin="lower")
-
-    ax.set_xticks(range(len(pivot_og.columns)))
-    ax.set_xticklabels(pivot_og.columns)
-    ax.set_yticks(range(len(pivot_og.index)))
-    ax.set_yticklabels(pivot_og.index)
-
-    ax.set_xlabel("BUSCO completeness threshold per species (%)")
-    ax.set_ylabel("BUSCO presence threshold across species (%)")
-    ax.set_title("Orthogroups retained across threshold combinations")
-
-    cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label("Number of orthogroups")
-
-    for i in range(pivot_og.shape[0]):
-        for j in range(pivot_og.shape[1]):
-            og = int(pivot_og.iloc[i, j])
-            sp = int(pivot_sp.iloc[i, j])
-            ax.text(j, i, f"{og}\n({sp} sp.)", ha="center", va="center", fontsize=7)
-
-    plt.tight_layout()
-
-    for ext in ["pdf", "png", "svg"]:
-        plt.savefig(f"{args.output}_heatmap.{ext}", dpi=300)
-
-    plt.close()
-
-    # Plot 2: compromise scatter plot
+    # Trade-off scatter plot
     fig, ax = plt.subplots(figsize=(8, 6))
 
     scatter = ax.scatter(

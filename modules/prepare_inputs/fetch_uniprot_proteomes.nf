@@ -15,13 +15,18 @@ process FETCH_UNIPROT_PROTEOMES {
     --data-urlencode "compressed=false" \
     --data-urlencode "format=tsv" \
     --data-urlencode "fields=upid,organism,organism_id,protein_count,busco,cpd" \
-    --data-urlencode "query=((taxonomy_id:${taxid}))" \
-    -o ${taxid}.upids.out
+    --data-urlencode "query=((taxonomy_id:${taxid}) AND (proteome_type:REFERENCE))" \\
+    -o ${taxid}.upids.out > ${taxid}.log
 
+    if [ ! -s ${taxid}.upids.out ]; then
+        echo "ERROR: UniProt returned an empty file for taxid ${taxid}" >&2
+        exit 1
+    fi
+    
     awk -F '\\t' '
         BEGIN { OFS="\\t" }
         NR == 1 {
-            print "taxid","specie","sra"
+            print "taxid","specie","upid"
             next
         }
 

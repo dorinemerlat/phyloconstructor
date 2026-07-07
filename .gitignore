@@ -10,3 +10,8 @@ nextflow.sbatch
 .nextflow.log*
 .nextflow/*
 tmp/
+data_accessions_summary.*
+log
+work
+.vscode/
+additional/

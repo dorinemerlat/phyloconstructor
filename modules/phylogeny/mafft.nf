@@ -1,14 +1,14 @@
 process MAFFT {
-    tag "${job_name}"
+    tag "${label}/${job_name}"
     cpus 4
-    memory { "${10 + (20 * (task.attempt - 1))} GB" }
+    memory { "${15 + (20 * (task.attempt - 1))} GB" }
 
     input:
-    tuple val(job_name), val(orthogroup), path(fasta) 
+    tuple val(label), val(job_name), val(orthogroup), path(fasta) 
     //, path(busco_sequences, stageAs: "input/*")
 
     output:
-    tuple val(job_name), val(orthogroup), path("${orthogroup}.aln") 
+    tuple val(label), val(job_name), val(orthogroup), path("${orthogroup}.aln") 
 
     script:
     """

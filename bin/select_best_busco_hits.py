@@ -6,11 +6,11 @@ import pandas as pd
 
 SOURCE_PRIORITY = {
     "user_proteomes": 1,
-    "uniprot_proteomes": 2,
-    "ncbi_proteomes": 3,
-    "ncbi_assemblies": 4,
-    "tsa_transcriptomes": 5,
-    "sra_transcriptomes": 5,
+    "uniprot_proteomes": 1,
+    "ncbi_proteomes": 1,
+    "ncbi_assemblies": 2,
+    "tsa_transcriptomes": 3,
+    "sra_transcriptomes": 3,
 }
 
 
