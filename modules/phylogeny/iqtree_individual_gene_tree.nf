@@ -17,7 +17,7 @@ process IQTREE_INDIVIDUAL_GENE_TREE {
 
     iqtree3 \\
         -s ${aln} \\
-        -m LG+G4 \\
+        -m MFP+MERGE \\
         -B 1000 \\
         --bnni \\
         --prefix ${orthogroup} \\

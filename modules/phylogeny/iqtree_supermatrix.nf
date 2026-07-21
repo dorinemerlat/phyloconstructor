@@ -1,9 +1,9 @@
 process IQTREE_SUPERMATRIX {
     tag "${label}/${job_name}"
     cpus 20
-    memory { "${50 * task.attempt} GB" }
+    memory '64 GB'
     scratch false
-    time '2d'
+    time '5d'
 
     input:
     tuple val(label), val(job_name), path(aln), path(partition)

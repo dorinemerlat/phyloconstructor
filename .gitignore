@@ -15,3 +15,9 @@ log
 work
 .vscode/
 additional/
+calibration_benavides.csv
+cafe5.sbatch
+command_cafe.sh command.sh
+species_to_keep.txt
+command.sh
+command_cafe.sh

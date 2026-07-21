@@ -2,7 +2,6 @@ include { EXTRACT_BUSCO_FASTA         } from '../modules/phylogeny/extract_busco
 include { MAFFT                       } from '../modules/phylogeny/mafft'
 include { TRIMAL                      } from '../modules/phylogeny/trimal'
 include { CLIPKIT                     } from '../modules/phylogeny/clipkit'
-include { AMAS                        } from '../modules/phylogeny/amas'
 include { PHYKIT_CONCAT               } from '../modules/phylogeny/phykit_concat'
 include { IQTREE_SUPERMATRIX          } from '../modules/phylogeny/iqtree_supermatrix'
 include { IQTREE_INDIVIDUAL_GENE_TREE } from '../modules/phylogeny/iqtree_individual_gene_tree'
@@ -29,7 +28,7 @@ workflow PHYLOGENY {
     selected_orthogroups
         .flatMap { label, tables ->
             tables.collect { table ->
-                [ label, table ]
+                [ label, table ] 
             }
         }
         .map { label, file ->
@@ -81,7 +80,7 @@ workflow PHYLOGENY {
     MAFFT(all_orthogroup_fastas)
 
     TRIMAL(MAFFT.out)
-    CLIPKIT(MAFFT.out)
+    // CLIPKIT(MAFFT.out)
 
     TRIMAL.out
         .groupTuple(by: [0, 1])
@@ -95,38 +94,38 @@ workflow PHYLOGENY {
         .flatMap { it }
         .set { all_alns_trimal }
 
-    CLIPKIT.out
-        .groupTuple(by: [0, 1])
-        .map { label, job_name, orthogroups, alns ->
-            def sorted = [orthogroups, alns].transpose().sort { it[0] }
-            [ 'clipseq_' + label, job_name, sorted.collect { it[1] } ]
-        }
-        .toSortedList { a, b ->
-            a[0] <=> b[0]
-        }
-        .flatMap { it }
-        .set { all_alns_clipkit }
+    // CLIPKIT.out
+    //     .groupTuple(by: [0, 1])
+    //     .map { label, job_name, orthogroups, alns ->
+    //         def sorted = [orthogroups, alns].transpose().sort { it[0] }
+    //         [ 'clipseq_' + label, job_name, sorted.collect { it[1] } ]
+    //     }
+    //     .toSortedList { a, b ->
+    //         a[0] <=> b[0]
+    //     }
+    //     .flatMap { it }
+    //     .set { all_alns_clipkit }
 
-    all_alns_trimal.concat(all_alns_clipkit).set{all_alns} 
+    // all_alns_trimal.concat(all_alns_clipkit).set{all_alns} 
 
-    PHYKIT_CONCAT(all_alns)
+    PHYKIT_CONCAT(all_alns_trimal)
 
     IQTREE_SUPERMATRIX(PHYKIT_CONCAT.out.main_output)
 
-    TRIMAL.out
-        .map { label, job_name, orthogroups, alns -> ['trimal_' + label, job_name, orthogroups, alns ] }
-        .set {trimal_out}
-    CLIPKIT.out
-        .map { label, job_name, orthogroups, alns -> ['clipseq_' + label, job_name, orthogroups, alns ] }
-        .set {clipseq_out}
-    trimal_out.concat(clipseq_out).set{clean_alns}
-    IQTREE_INDIVIDUAL_GENE_TREE(clean_alns)
+    // TRIMAL.out
+    //     .map { label, job_name, orthogroups, alns -> ['trimal_' + label, job_name, orthogroups, alns ] }
+    //     .set {trimal_out}
+    // CLIPKIT.out
+    //     .map { label, job_name, orthogroups, alns -> ['clipseq_' + label, job_name, orthogroups, alns ] }
+    //     .set {clipseq_out}
+    // trimal_out.concat(clipseq_out).set{clean_alns}
+    // IQTREE_INDIVIDUAL_GENE_TREE(clean_alns)
 
-    IQTREE_INDIVIDUAL_GENE_TREE.out.treefile
-        .groupTuple(by: [0, 1])
-        .set { gene_trees_by_label }
+    // IQTREE_INDIVIDUAL_GENE_TREE.out.treefile
+    //     .groupTuple(by: [0, 1])
+    //     .set { gene_trees_by_label }
     
-    gene_trees_by_label.view()
+    // gene_trees_by_label.view()
 
-    ASTRAL(gene_trees_by_label)
+    // ASTRAL(gene_trees_by_label)
 }

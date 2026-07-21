@@ -1,5 +1,3 @@
-import Utils
-
 include { FETCH_UNIPROT_PROTEOMES     } from '../modules/prepare_inputs/fetch_uniprot_proteomes'
 include { DOWNLOAD_UNIPROT_PROTEOMES  } from '../modules/prepare_inputs/download_uniprot_proteomes'
 include { FETCH_NCBI_ASSEMBLIES       } from '../modules/prepare_inputs/fetch_ncbi_assemblies'
@@ -167,11 +165,7 @@ workflow PREPARE_INPUTS {
      * Assemblies are also fetched when SRA reads are requested, because
      * genome assemblies may be needed as references for downstream analyses.
      */
-    if (
-        params.download_ncbi_assemblies == true ||
-        params.download_ncbi_proteomes == true ||
-        params.download_sra_reads == true
-    ) {
+    if (params.download_ncbi_assemblies == true || params.download_ncbi_proteomes == true ) {
 
         /*
          * Fetch NCBI assembly and proteome IDs associated with each taxid.
@@ -202,33 +196,22 @@ workflow PREPARE_INPUTS {
         )
 
         /*
-         * Optionally download NCBI genome assemblies.
+         * Download NCBI genome assemblies.
          */
-        if (
-            params.download_ncbi_assemblies == true ||
-            params.download_sra_reads == true
-        ) {
+        DOWNLOAD_NCBI_ASSEMBLIES(ncbi_assembly_ids)
 
-            DOWNLOAD_NCBI_ASSEMBLIES(ncbi_assembly_ids)
-
-            /*
-             * Add BUSCO metadata to downloaded genome assemblies.
-             *
-             * DOWNLOAD_NCBI_ASSEMBLIES emits both genome FASTA and GFF.
-             * BUSCO only needs the genome FASTA here, so the GFF is ignored.
-             */
-            ncbi_assemblies = Utils.add_source_and_busco_dataset(
-                DOWNLOAD_NCBI_ASSEMBLIES.out.map { taxid, specie, accession, fna, gff ->
-                    [ taxid, specie, accession, fna ]
-                },
-                'ncbi_assemblies',
-                'genome',
-                params.busco_lineage
-            )
-
-        } else {
-            ncbi_assemblies = Channel.empty()
-        }
+        /*
+        * Add BUSCO metadata to downloaded genome assemblies.
+        *
+        * DOWNLOAD_NCBI_ASSEMBLIES emits both genome FASTA and GFF.
+        * BUSCO only needs the genome FASTA here, so the GFF is ignored.
+        */
+        ncbi_assemblies = Utils.add_source_and_busco_dataset(
+            DOWNLOAD_NCBI_ASSEMBLIES.out.map { taxid, specie, accession, fna, gff -> [ taxid, specie, accession, fna ]},
+            'ncbi_assemblies',
+            'genome',
+            params.busco_lineage
+        )
 
         /*
          * Optionally download NCBI proteomes.

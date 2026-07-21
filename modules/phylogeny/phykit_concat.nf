@@ -4,8 +4,8 @@ process PHYKIT_CONCAT {
     stageInMode 'copy'
 
     memory { "${10 + (5 * (task.attempt - 1))} GB" }
-    maxRetries = 4
-    errorStrategy = { task.attempt <= 5 ? 'retry' : 'ignore' }
+    maxRetries 4
+    errorStrategy { task.attempt <= 5 ? 'retry' : 'ignore' }
 
     input:
     tuple val(label), val(job_name), path(aln, stageAs: "input/*")

@@ -19,8 +19,11 @@ Quickstart
 - Run the pipeline from the repository root:
 
 ```
+module load nextflow singularity
 nextflow run main.nf
 ```
+
+On a SLURM cluster, you can also submit [nextflow.sbatch](nextflow.sbatch) instead of running the command manually.
 
 Configuration & layout
 - Main config: `nextflow.config` (project params and included module config files).
