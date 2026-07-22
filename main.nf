@@ -678,18 +678,28 @@ def formatEnabled(Boolean value) {
 /*
  * Format a species list for the startup summary.
  */
-def formatSpeciesList(List species) {
+def formatSpeciesList(List species, String emptyMessage) {
+
+    if (species.isEmpty()) {
+        return "    - ${emptyMessage}"
+    }
 
     species
         .sort { a, b ->
             a.name.toLowerCase() <=> b.name.toLowerCase()
         }
         .collect { record ->
-            "    - ${record.name} (taxid: ${record.taxid})"
+
+            def line = "    - ${record.name} (taxid: ${record.taxid})"
+
+            if (record.fasta) {
+                line += " [user FASTA]"
+            }
+
+            return line
         }
         .join('\n')
 }
-
 
 /*
  * Print the complete validated pipeline configuration before starting
@@ -714,8 +724,15 @@ def printParameterSummary(
         }
         .join('\n')
 
-    def groupSpeciesSummary = formatSpeciesList(groupSpecies)
-    def outgroupSpeciesSummary = formatSpeciesList(outgroupSpecies)
+    def groupSpeciesSummary = formatSpeciesList(
+        groupSpecies,
+        "none (automatic download only)"
+    )
+
+    def outgroupSpeciesSummary = formatSpeciesList(
+        outgroupSpecies,
+        "none"
+    )
 
     def totalSpecies =
         groupSpecies.size() + outgroupSpecies.size()

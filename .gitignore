@@ -22,3 +22,7 @@ species_to_keep.txt
 command.sh
 command_cafe.sh
 results/
+group_species_myriapoda.csv nextflow_myriapoda.config outgroups_myriapoda.csv
+group_species_myriapoda.csv
+outgroups_myriapoda.csv
+nextflow_myriapoda.config
