@@ -1,0 +1,5 @@
+taxid,name,fasta
+4950,Zygotorulaspora mrakii,${projectDir}/example/proteomes/zygotorulaspora-mrakii.faa
+559295,Zygosaccharomyces rouxii,${projectDir}/example/proteomes/zygosaccharomyces-rouxii.faa
+28985,Kluyveromyces lactis,${projectDir}/example/proteomes/kluyveromyces-lactis.faa
+4934,Lachancea kluyveri,${projectDir}/example/proteomes/lachancea-kluyveri.faa

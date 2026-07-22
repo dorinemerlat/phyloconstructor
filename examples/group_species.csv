@@ -1,0 +1,2 @@
+taxid,name,fasta
+48254,Torulaspora globosa,${projectDir}/example/proteomes/torulaspora-globosa.faa
