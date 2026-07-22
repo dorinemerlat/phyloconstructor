@@ -1,13 +1,8 @@
 process BUSCO {
     tag "${specie}/${source}/${data_id}"
-    scratch true 
-
+    label 'busco'
     cpus { mode == 'genome' ? 6 : 10 }
-    memory {
-        mode == 'genome'
-            ? "${100 + (50 * (task.attempt - 1))} GB"
-            : "${20 + (10 * (task.attempt - 1))} GB"
-    }
+    memory { mode == 'genome' ? "${100 + (50 * (task.attempt - 1))} GB" : "${20 + (10 * (task.attempt - 1))} GB"}
 
     time '10h'
 
@@ -20,34 +15,34 @@ process BUSCO {
     tuple val(taxid), val(specie), val(data_id), path("${specie}_${source}_${data_id}_full_table.tsv"), val(source), emit: full_table
     tuple val(taxid), val(specie), val(data_id), path("${specie}_${source}_${data_id}_single_copy_busco_sequences.fasta"), val(source), emit: single_copy_busco_sequences
     tuple val(taxid), val(specie), val(data_id), path("${specie}_${source}_${data_id}_multi_copy_busco_sequences.fasta"), val(source), emit: multi_copy_busco_sequences
-    
+
     script:
     def busco_out = "busco_${specie}_${source}_${data_id}_${mode}"
-    def single_copy_dir = "${busco_out}/run_${dataset}/busco_sequences/single_copy_busco_sequences"
-    def multi_copy_dir = "${busco_out}/run_${dataset}/busco_sequences/multi_copy_busco_sequences"
+    def run_dir = "${busco_out}/run_${dataset}"
+    def single_copy_dir = "${run_dir}/busco_sequences/single_copy_busco_sequences"
+    def multi_copy_dir = "${run_dir}/busco_sequences/multi_copy_busco_sequences"
     def single_copy_file = "${specie}_${source}_${data_id}_single_copy_busco_sequences.fasta"
     def multi_copy_file = "${specie}_${source}_${data_id}_multi_copy_busco_sequences.fasta"
     def prefix = "${specie}.${source}.${data_id}"
 
     """
-    module load busco
+    # Replace slashes in FASTA headers because they interfere with downstream identifiers.
+    sed 's|/|_|g' "${fasta}" > "${specie}_${source}_${data_id}.fasta"
 
-    sed 's|/|_|g' ${fasta} > ${specie}_${source}_${data_id}.fasta
-
+    # Run BUSCO using the locally available lineage datasets.
     busco \\
-        -i ${specie}_${source}_${data_id}.fasta \\
-        -o ${busco_out} \\
-        -m ${mode} \\
-        -l ${dataset} \\
-        -c ${task.cpus} \\
-        -f \\
-        --offline \\
-        --download_path /shared/projects/metainvert/phyloconstructor2/data/busco_downloads
+        -i "${specie}_${source}_${data_id}.fasta" \\
+        -o "${busco_out}" \\
+        -m "${mode}" \\
+        -l "${dataset}" \\
+        -c ${task.cpus} 
 
-    mv ${busco_out}/short_summary*.json ${specie}_${source}_${data_id}.json
-    mv ${busco_out}/short_summary*.txt ${specie}_${source}_${data_id}.txt
-    mv ${busco_out}/run_${dataset}/full_table.tsv ${specie}_${source}_${data_id}_full_table.tsv
+    # Rename the main BUSCO reports using stable dataset identifiers.
+    mv "${busco_out}"/short_summary*.json "${specie}_${source}_${data_id}.json"
+    mv "${busco_out}"/short_summary*.txt "${specie}_${source}_${data_id}.txt"
+    mv "${run_dir}/full_table.tsv" "${specie}_${source}_${data_id}_full_table.tsv"
 
+    # Concatenate BUSCO amino-acid sequences and assign globally unique identifiers.
     format_busco_sequences() {
         local busco_dir="\$1"
         local out_file="\$2"
@@ -55,22 +50,47 @@ process BUSCO {
 
         > "\$out_file"
 
-        if [[ ! -d "\$busco_dir" ]] || ! find "\$busco_dir" -type f -name "*.faa" -print -quit | grep -q .; then
+        if [[ ! -d "\$busco_dir" ]] ||
+           ! find "\$busco_dir" -type f -name "*.faa" -print -quit | grep -q .
+        then
             return 0
         fi
 
-        find "\$busco_dir" -type f -name "*.faa" | sort | while read -r faa; do
-            busco_id=\$(basename "\$faa" .faa)
+        find "\$busco_dir" -type f -name "*.faa" -print0 |
+            sort -z |
+            while IFS= read -r -d '' faa
+            do
+                busco_id=\$(basename "\$faa" .faa)
 
-            if [[ "\$mode_value" == "genome" ]]; then
-                sed "s|^>|>${prefix}.|g" "\$faa" >> "\$out_file"
-            else
-                sed "s|^>|>${prefix}.\${busco_id}.|g" "\$faa" >> "\$out_file"
-            fi
-        done
+                if [[ "\$mode_value" == "genome" ]]
+                then
+                    sed "s|^>|>${prefix}.|g" "\$faa" >> "\$out_file"
+                else
+                    sed "s|^>|>${prefix}.\${busco_id}.|g" "\$faa" >> "\$out_file"
+                fi
+            done
     }
 
-    format_busco_sequences "${single_copy_dir}" "${single_copy_file}" "${mode}"
-    format_busco_sequences "${multi_copy_dir}" "${multi_copy_file}" "${mode}"
+    format_busco_sequences \\
+        "${single_copy_dir}" \\
+        "${single_copy_file}" \\
+        "${mode}"
+
+    format_busco_sequences \\
+        "${multi_copy_dir}" \\
+        "${multi_copy_file}" \\
+        "${mode}"
+    """
+
+    stub:
+    """
+    command -v busco >/dev/null
+    busco --version >/dev/null
+
+    touch "${specie}_${source}_${data_id}.json"
+    touch "${specie}_${source}_${data_id}.txt"
+    touch "${specie}_${source}_${data_id}_full_table.tsv"
+    touch "${specie}_${source}_${data_id}_single_copy_busco_sequences.fasta"
+    touch "${specie}_${source}_${data_id}_multi_copy_busco_sequences.fasta"
     """
 }

@@ -1,8 +1,7 @@
 process RNASPADES {
     tag "${specie}"
-    scratch false
+    label 'rna_tools'
     cpus 6
-    stageInMode 'copy'
     memory { "${50 + (50 * (task.attempt - 1))} GB" }
     time '5d'
 
@@ -14,83 +13,81 @@ process RNASPADES {
 
     script:
     """
-    module load spades bbmap
-
     check_and_repair_pair() {
         local r1="\$1"
         local r2="\$2"
         local prefix="\$3"
-
-        echo "Checking pair:"
-        echo "  R1: \$r1"
-        echo "  R2: \$r2"
 
         local n1_lines
         local n2_lines
         local n1
         local n2
 
-        n1_lines=\$(zcat "\$r1" | wc -l)
-        n2_lines=\$(zcat "\$r2" | wc -l)
+        n1_lines=\$(gzip -cd "\$r1" | wc -l)
+        n2_lines=\$(gzip -cd "\$r2" | wc -l)
 
-        if (( n1_lines % 4 != 0 || n2_lines % 4 != 0 )); then
-            echo "ERROR: FASTQ line count is not divisible by 4"
-            echo "\$r1: \$n1_lines lines"
-            echo "\$r2: \$n2_lines lines"
+        if (( n1_lines % 4 != 0 || n2_lines % 4 != 0 ))
+        then
+            echo "ERROR: FASTQ line count is not divisible by four" >&2
+            echo "\$r1: \$n1_lines lines" >&2
+            echo "\$r2: \$n2_lines lines" >&2
             exit 1
         fi
 
         n1=\$((n1_lines / 4))
         n2=\$((n2_lines / 4))
 
-        echo "  R1 reads: \$n1"
-        echo "  R2 reads: \$n2"
-
-        if [[ "\$n1" -eq "\$n2" ]]; then
-            echo "  Pair is balanced. No repair needed." >&2
-            echo "\$r1"
-            echo "\$r2"
-        else
-            echo "  Pair is unbalanced. Running repair.sh..." >&2
-
-            local repaired1="\${prefix}_1.repaired.fastq.gz"
-            local repaired2="\${prefix}_2.repaired.fastq.gz"
-            local singletons="\${prefix}_singletons.fastq.gz"
-
-            repair.sh \\
-                in1="\$r1" \\
-                in2="\$r2" \\
-                out1="\$repaired1" \\
-                out2="\$repaired2" \\
-                outs="\$singletons" \\
-                repair
-
-            echo "\$repaired1"
-            echo "\$repaired2"
+        if [[ "\$n1" -eq "\$n2" ]]
+        then
+            printf "%s\\n%s\\n" "\$r1" "\$r2"
+            return
         fi
+
+        echo "Unbalanced pair detected. Running repair.sh." >&2
+
+        local repaired1="\${prefix}_1.repaired.fastq.gz"
+        local repaired2="\${prefix}_2.repaired.fastq.gz"
+        local singletons="\${prefix}_singletons.fastq.gz"
+
+        repair.sh \\
+            in1="\$r1" \\
+            in2="\$r2" \\
+            out1="\$repaired1" \\
+            out2="\$repaired2" \\
+            outs="\$singletons" \\
+            repair=t
+
+        if [[ ! -s "\$repaired1" || ! -s "\$repaired2" ]]
+        then
+            echo "ERROR: repair.sh produced empty paired FASTQ files" >&2
+            exit 1
+        fi
+
+        printf "%s\\n%s\\n" "\$repaired1" "\$repaired2"
     }
 
     r1_files=( ${reads1.join(' ')} )
     r2_files=( ${reads2.join(' ')} )
 
-    if [[ "\${#r1_files[@]}" -ne "\${#r2_files[@]}" ]]; then
-        echo "ERROR: different number of R1 and R2 files"
-        echo "R1 files: \${#r1_files[@]}"
-        echo "R2 files: \${#r2_files[@]}"
+    if [[ "\${#r1_files[@]}" -ne "\${#r2_files[@]}" ]]
+    then
+        echo "ERROR: different numbers of R1 and R2 files" >&2
         exit 1
     fi
 
     fixed_r1=()
     fixed_r2=()
 
-    for i in "\${!r1_files[@]}"; do
-        r1="\${r1_files[\$i]}"
-        r2="\${r2_files[\$i]}"
-
+    # Validate and repair each sequencing run independently.
+    for i in "\${!r1_files[@]}"
+    do
         prefix="${specie}_pair\$((i + 1))"
 
         mapfile -t repaired_pair < <(
-            check_and_repair_pair "\$r1" "\$r2" "\$prefix" | tail -n 2
+            check_and_repair_pair \\
+                "\${r1_files[\$i]}" \\
+                "\${r2_files[\$i]}" \\
+                "\$prefix"
         )
 
         fixed_r1+=("\${repaired_pair[0]}")
@@ -99,20 +96,36 @@ process RNASPADES {
 
     rnaspades_inputs=()
 
-    for i in "\${!fixed_r1[@]}"; do
-        rnaspades_inputs+=("-1" "\${fixed_r1[\$i]}" "-2" "\${fixed_r2[\$i]}")
+    for i in "\${!fixed_r1[@]}"
+    do
+        rnaspades_inputs+=(
+            "-1" "\${fixed_r1[\$i]}"
+            "-2" "\${fixed_r2[\$i]}"
+        )
     done
 
-    echo "rnaSPAdes inputs:"
-    printf '  %s\\n' "\${rnaspades_inputs[@]}"
-
+    # Assemble all paired RNA-seq runs for the species.
     rnaspades.py \\
         "\${rnaspades_inputs[@]}" \\
         -t ${task.cpus} \\
-        -m ${task.memory.toGiga()} \\
-        -o rnaspades_${specie}
+        -m ${task.memory.toGiga() as long} \\
+        -o "rnaspades_${specie}"
 
-    cp rnaspades_${specie}/transcripts.fasta \\
-       ${specie}_rnaspades_transcripts.fasta
+    cp "rnaspades_${specie}/transcripts.fasta" \\
+        "${specie}_rnaspades_transcripts.fasta"
+
+    test -s "${specie}_rnaspades_transcripts.fasta" || {
+        echo "ERROR: rnaSPAdes produced an empty transcriptome" >&2
+        exit 1
+    }
+    """
+
+    stub:
+    """
+    command -v rnaspades.py >/dev/null
+    command -v repair.sh >/dev/null
+    command -v gzip >/dev/null
+
+    touch "${specie}_rnaspades_transcripts.fasta"
     """
 }

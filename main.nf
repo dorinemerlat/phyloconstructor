@@ -97,36 +97,6 @@ underscores and hyphens only.
 
 
 /*
- * Validate the expected number of BUSCO markers.
- */
-def validateBuscoDatasetSize() {
-
-    def value = requireParameter('busco_dataset_size')
-        .toString()
-        .trim()
-
-    if (!(value ==~ /^\d+$/)) {
-        error """
-Invalid value for params.busco_dataset_size: ${value}
-
-The BUSCO dataset size must be a positive integer.
-Example:
-
-params.busco_dataset_size = '1013'
-""".stripIndent()
-    }
-
-    if ((value as Integer) <= 0) {
-        error """
-Invalid value for params.busco_dataset_size: ${value}
-
-The BUSCO dataset size must be greater than zero.
-""".stripIndent()
-    }
-}
-
-
-/*
  * Validate the numeric BUSCO filtering mode provided by the user.
  *
  * Configuration values:
@@ -680,7 +650,6 @@ def validateParameters() {
     }
 
     validateBuscoLineage()
-    validateBuscoDatasetSize()
 
     /*
      * Convert the user-facing numeric value to the explicit strategy
@@ -784,15 +753,13 @@ NCBI assemblies             : ${formatEnabled(params.download_ncbi_assemblies)}
 TSA transcriptomes          : ${formatEnabled(params.download_tsa_transcriptomes)}
 SRA reads                   : ${formatEnabled(params.download_sra_reads)}
 
-BUSCO
------
-Lineage                     : ${params.busco_lineage}
-Expected dataset size       : ${params.busco_dataset_size}
-Filtering mode              : ${params.busco_filtering_mode}
-Internal filtering strategy : ${buscoFilteringStrategy}
-Filtering description       : ${formatBuscoFilteringMode(
-                                    buscoFilteringStrategy
-                                )}
+BUSCO 
+----- 
+Lineage : ${params.busco_lineage} 
+Filtering mode : ${params.busco_filtering_mode} 
+Internal filtering strategy : ${buscoFilteringStrategy} 
+Filtering description : ${formatBuscoFilteringMode( buscoFilteringStrategy )
+                            }
 
 Phylogenetic analyses
 ---------------------

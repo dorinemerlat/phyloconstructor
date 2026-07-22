@@ -1,18 +1,41 @@
-process MAFFT {
+process IQTREE_SUPERMATRIX {
     tag "${label}/${job_name}"
-    cpus 4
-    memory { "${15 + (20 * (task.attempt - 1))} GB" }
+    label 'iqtree'
+
+    cpus 20
+    memory { "${64 + (32 * (task.attempt - 1))} GB" }
+    time '5d'
 
     input:
-    tuple val(label), val(job_name), val(orthogroup), path(fasta) 
-    //, path(busco_sequences, stageAs: "input/*")
+    tuple val(label), val(job_name), path(aln), path(partition)
 
     output:
-    tuple val(label), val(job_name), val(orthogroup), path("${orthogroup}.aln") 
+    tuple val(label), val(job_name), path("${label}_${job_name}_supermatrix.treefile")
+    tuple val(label), val(job_name), path("${label}_${job_name}_supermatrix.*")
 
     script:
+    def prefix = "${label}_${job_name}_supermatrix"
+
     """
-    module load mafft
-    mafft --localpair --maxiterate 1000 --reorder --thread ${task.cpus} ${fasta} > ${orthogroup}.aln
+    # Infer a partitioned maximum-likelihood tree from the concatenated alignment.
+    iqtree3 \\
+        -s "${aln}" \\
+        -p "${partition}" \\
+        -m MFP+MERGE \\
+        -B 1000 \\
+        --alrt 1000 \\
+        --bnni \\
+        --prefix "${prefix}" \\
+        -T ${task.cpus}
+    """
+
+    stub:
+    def prefix = "${label}_${job_name}_supermatrix"
+
+    """
+    command -v iqtree3 >/dev/null
+
+    touch "${prefix}.treefile"
+    touch "${prefix}.log"
     """
 }

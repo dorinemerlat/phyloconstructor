@@ -1,9 +1,10 @@
 process DOWNLOAD_TSA_TRANSCRIPTOMES {
-    tag "${specie}"
+    tag "${specie}/${tsa}"
+    label 'rna_tools'
     cache 'lenient'
-
     cpus 4
     memory '16 GB'
+    time '12h'
     maxForks 2
 
     input:
@@ -14,30 +15,38 @@ process DOWNLOAD_TSA_TRANSCRIPTOMES {
 
     script:
     """
-    module load sra-tools/3.4.1
-
-    export TMPDIR=\$PWD/tmp_tsa_${tsa}
+    export TMPDIR="\$PWD/tmp_tsa_${tsa}"
     export TEMP="\$TMPDIR"
     export TMP="\$TMPDIR"
 
     mkdir -p "\$TMPDIR"
 
-    prefetch -f ALL ${tsa} --output-directory .
+    # Download the TSA archive and convert it to FASTA.
+    prefetch -f ALL "${tsa}" \\
+        --output-directory .
 
     fasterq-dump \\
         --fasta \\
         --threads ${task.cpus} \\
         --mem 1000M \\
         --temp "\$TMPDIR" \\
-        ${tsa} \\
+        "${tsa}" \\
         -O . \\
-        -o ${specie}_${tsa}.fasta
+        -o "${specie}_${tsa}.fasta"
 
-    rm -rf "\$TMPDIR"
+    test -s "${specie}_${tsa}.fasta" || {
+        echo "ERROR: TSA FASTA is empty for ${tsa}" >&2
+        exit 1
+    }
+
+    rm -rf "${tsa}" "\$TMPDIR"
     """
 
     stub:
     """
-    touch ${specie}_${tsa}.fasta
+    command -v prefetch >/dev/null
+    command -v fasterq-dump >/dev/null
+
+    touch "${specie}_${tsa}.fasta"
     """
 }

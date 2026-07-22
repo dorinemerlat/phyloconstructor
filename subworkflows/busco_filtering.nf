@@ -1,4 +1,6 @@
+```groovy
 import Utils
+import groovy.json.JsonSlurper
 
 include { BUSCO                          } from '../modules/busco_filtering/busco'
 include { FILTER_SINGLE_COPY_BUSCO_HITS  } from '../modules/busco_filtering/filter_single_copy_busco_hits'
@@ -12,13 +14,88 @@ workflow BUSCO_FILTERING {
     take:
     all_busco_inputs
     busco_filtering_strategy
-    
+
     main:
 
     /*
      * Run BUSCO on every candidate dataset.
      */
     BUSCO(all_busco_inputs)
+
+
+    /*
+     * Read the OrthoDB dataset size from the first BUSCO JSON report.
+     *
+     * All BUSCO analyses use the same lineage dataset, so every JSON
+     * report is expected to contain the same number_of_buscos value.
+     */
+    BUSCO.out.json
+        .first()
+        .map { taxid, specie, data_id, json_file, source ->
+
+            def json_data = new JsonSlurper().parse(json_file.toFile())
+
+            def find_json_value
+            find_json_value = { object, key ->
+
+                if (object instanceof Map) {
+                    if (object.containsKey(key)) {
+                        return object[key]
+                    }
+
+                    for (value in object.values()) {
+                        def result = find_json_value(value, key)
+
+                        if (result != null) {
+                            return result
+                        }
+                    }
+                }
+
+                if (object instanceof Collection) {
+                    for (value in object) {
+                        def result = find_json_value(value, key)
+
+                        if (result != null) {
+                            return result
+                        }
+                    }
+                }
+
+                return null
+            }
+
+            def number_of_buscos = find_json_value(
+                json_data,
+                'number_of_buscos'
+            )
+
+            if (number_of_buscos == null) {
+                throw new IllegalStateException(
+                    "Could not find 'number_of_buscos' in BUSCO report: ${json_file}"
+                )
+            }
+
+            def dataset_size
+
+            try {
+                dataset_size = number_of_buscos.toString().toInteger()
+            } catch (Exception error) {
+                throw new IllegalStateException(
+                    "Invalid number_of_buscos value '${number_of_buscos}' " +
+                    "in BUSCO report: ${json_file}",
+                    error
+                )
+            }
+
+            log.info(
+                "BUSCO lineage dataset size: ${dataset_size} orthologs " +
+                "(read from ${json_file.name})"
+            )
+
+            dataset_size
+        }
+        .set { busco_dataset_size }
 
 
     /*
@@ -102,14 +179,9 @@ workflow BUSCO_FILTERING {
     /*
      * Group the selected BUSCO tables by filtering strategy.
      *
-     * Expected output:
+     * Intermediate format:
      *
-     *   [label, list_of_tables, BUSCO_dataset_size]
-     *
-     * Labels are:
-     *
-     *   only_single_copy
-     *   all_complete
+     *   [label, list_of_tables]
      */
     SELECT_BEST_BUSCO_HITS.out
         .map { label, taxid, specie, table ->
@@ -122,11 +194,22 @@ workflow BUSCO_FILTERING {
                 .unique { it.name }
                 .sort { it.name }
 
-            [
-                label,
-                sorted_tables,
-                params.busco_dataset_size
-            ]
+            [label, sorted_tables]
+        }
+        .set { grouped_busco_results }
+
+
+    /*
+     * Add the lineage dataset size extracted from the BUSCO JSON report.
+     *
+     * Final format:
+     *
+     *   [label, list_of_tables, BUSCO_dataset_size]
+     */
+    grouped_busco_results
+        .combine(busco_dataset_size)
+        .map { label, tables, dataset_size ->
+            [label, tables, dataset_size]
         }
         .set { all_busco_results }
 
@@ -180,3 +263,4 @@ workflow BUSCO_FILTERING {
     single_copy_sequences = single_copy_busco_sequences
     multi_copy_sequences  = multi_copy_busco_sequences
 }
+```

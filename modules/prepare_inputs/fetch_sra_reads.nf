@@ -1,8 +1,11 @@
 process FETCH_SRA_READS {
-    tag ""
+    tag "${taxid}"
+    label 'entrez_direct'
+    memory '2 GB'
+    time '2h'
 
     input:
-    val(taxid)
+    val taxid
 
     output:
     tuple val(taxid), path("${taxid}.sra_runs.tsv"), emit: ids
@@ -10,28 +13,27 @@ process FETCH_SRA_READS {
 
     script:
     """
-    module load entrez-direct/22.4
-
-    search.sra() {
-        local taxid="\$1"
+    search_sra() {
+        local query_taxid="\$1"
 
         esearch -db sra \\
-            -query '((((txid'"\\\${taxid}"'[Organism:exp]) AND "paired"[Layout]) AND "illumina"[Platform]) AND "rna data"[Filter]) AND "filetype fastq"[Properties]' \\
+            -query '((((txid'"\${query_taxid}"'[Organism:exp]) AND "paired"[Layout]) AND "illumina"[Platform]) AND "rna data"[Filter]) AND "filetype fastq"[Properties]' \\
             > esearch.out
     }
 
-    {
-        search.sra ${taxid}
-    } || {
+    # Retry the Entrez search once after a randomized delay.
+    search_sra "${taxid}" || {
         sleep \$(shuf -i 5-30 -n 1)
-        search.sra ${taxid}
+        search_sra "${taxid}"
     }
 
-    count=\$(grep "<Count>" esearch.out | cut -d '>' -f 2 | cut -d '<' -f 1)
+    count=\$(grep -o '<Count>[0-9]*</Count>' esearch.out | head -n 1 | sed 's/<[^>]*>//g')
+    count=\${count:-0}
 
-    if [[ "\$count" != "0" ]]; then
-
-        efetch -format runinfo < esearch.out > ${taxid}.sra_runs.out
+    if [[ "\$count" != "0" ]]
+    then
+        efetch -format runinfo < esearch.out \\
+            > "${taxid}.sra_runs.out"
 
         awk -F ',' '
             BEGIN { OFS="\\t" }
@@ -60,13 +62,22 @@ process FETCH_SRA_READS {
 
                 print taxid, specie, run_accession
             }
-
-        ' ${taxid}.sra_runs.out > ${taxid}.sra_runs.tsv
-
+        ' "${taxid}.sra_runs.out" \\
+            > "${taxid}.sra_runs.tsv"
     else
+        printf "taxid\\tspecie\\tsra\\n" \\
+            > "${taxid}.sra_runs.tsv"
 
-        echo -e "taxid\\tspecie\\tsra" > ${taxid}.sra_runs.tsv
-
+        touch "${taxid}.sra_runs.out"
     fi
+    """
+
+    stub:
+    """
+    command -v esearch >/dev/null
+    command -v efetch >/dev/null
+
+    touch "${taxid}.sra_runs.tsv"
+    touch "${taxid}.sra_runs.out"
     """
 }

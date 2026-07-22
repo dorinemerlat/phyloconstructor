@@ -1,6 +1,9 @@
 process FETCH_NCBI_ASSEMBLIES {
-    tag ""
-    
+    tag "${taxid}"
+    label 'ncbi_datasets'
+    memory '4 GB'
+    time '4h'
+
     input:
     val taxid
 
@@ -11,16 +14,16 @@ process FETCH_NCBI_ASSEMBLIES {
 
     script:
     """
-    module load ncbi-datasets-cli
-
-    datasets summary genome taxon ${taxid} --as-json-lines \\
+    # Retrieve the complete NCBI assembly summary.
+    datasets summary genome taxon "${taxid}" --as-json-lines \\
         | dataformat tsv genome \\
-        > ${taxid}.ncbi_accessions.out
+        > "${taxid}.ncbi_accessions.out"
 
-    datasets summary genome taxon ${taxid} --as-json-lines \\
+    # Retrieve the fields required to construct the pipeline input tables.
+    datasets summary genome taxon "${taxid}" --as-json-lines \\
         | dataformat tsv genome \\
             --fields organism-tax-id,organism-name,accession,annotinfo-featcount-gene-protein-coding \\
-        > ${taxid}.ncbi_accessions.tsv.tmp
+        > "${taxid}.ncbi_accessions.tsv.tmp"
 
     awk -F '\\t' '
         BEGIN { OFS="\\t" }
@@ -30,7 +33,7 @@ process FETCH_NCBI_ASSEMBLIES {
             next
         }
 
-        NR > 1 {
+        {
             specie_taxid = \$1
             specie_name  = \$2
             accession    = \$3
@@ -42,7 +45,8 @@ process FETCH_NCBI_ASSEMBLIES {
 
             print specie_taxid, specie_name, accession
         }
-    ' ${taxid}.ncbi_accessions.tsv.tmp > ${taxid}.ncbi_accessions.tsv
+    ' "${taxid}.ncbi_accessions.tsv.tmp" \\
+        > "${taxid}.ncbi_accessions.tsv"
 
     awk -F '\\t' '
         BEGIN { OFS="\\t" }
@@ -52,12 +56,11 @@ process FETCH_NCBI_ASSEMBLIES {
             next
         }
 
-        NR > 1 {
+        {
             protein_coding_genes = \$4
 
-            if (protein_coding_genes == "" || protein_coding_genes == "0") {
+            if (protein_coding_genes == "" || protein_coding_genes == "0")
                 next
-            }
 
             specie_taxid = \$1
             specie_name  = \$2
@@ -70,6 +73,17 @@ process FETCH_NCBI_ASSEMBLIES {
 
             print specie_taxid, specie_name, accession
         }
-    ' ${taxid}.ncbi_accessions.tsv.tmp > ${taxid}.ncbi_accessions_for_proteins.tsv
+    ' "${taxid}.ncbi_accessions.tsv.tmp" \\
+        > "${taxid}.ncbi_accessions_for_proteins.tsv"
+    """
+
+    stub:
+    """
+    command -v datasets >/dev/null
+    command -v dataformat >/dev/null
+
+    touch "${taxid}.ncbi_accessions.tsv"
+    touch "${taxid}.ncbi_accessions_for_proteins.tsv"
+    touch "${taxid}.ncbi_accessions.out"
     """
 }

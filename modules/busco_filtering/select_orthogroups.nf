@@ -1,8 +1,8 @@
 process SELECT_ORTHOGROUPS {
-    tag "$label"
-    // publishDir "${params.outdir}/orthogroups/$label",
-    //     mode: 'copy',
-    //     pattern: "{orthogroups_summary.tsv,orthogroups_heatmap.*,orthogroups_heatmap_zoom_50_100.*}"
+    tag "${label}"
+    cpus 2
+    memory '4 GB'
+    time '2h'
 
     input:
     tuple val(label), path(table), val(dataset_size)
@@ -16,9 +16,22 @@ process SELECT_ORTHOGROUPS {
 
     script:
     """
+    # Evaluate BUSCO completeness and gene-occupancy threshold combinations.
     select_orthogroups.py \\
         --full-tables ${table.join(' ')} \\
         --output orthogroups \\
-        --dataset-size ${dataset_size}
+        --dataset-size "${dataset_size}"
+    """
+
+    stub:
+    """
+    command -v select_orthogroups.py >/dev/null
+
+    touch orthogroups_busco-c_60_gene-occupancy_80.tsv
+    touch orthogroups_summary.tsv
+
+    touch orthogroups_heatmap.{pdf,png,svg}
+    touch orthogroups_heatmap_zoom_50_100.{pdf,png,svg}
+    touch orthogroups_tradeoff.{pdf,png,svg}
     """
 }

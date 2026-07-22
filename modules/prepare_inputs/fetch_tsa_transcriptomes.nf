@@ -1,5 +1,8 @@
 process FETCH_TSA_TRANSCRIPTOMES {
-    tag ""
+    tag "${taxid}"
+    label 'entrez_direct'
+    memory '2 GB'
+    time '2h'
 
     input:
     val taxid
@@ -10,49 +13,59 @@ process FETCH_TSA_TRANSCRIPTOMES {
 
     script:
     """
-    module load entrez-direct/22.4
-
     esearch -db nuccore \\
         -query "(txid${taxid}[Organism:exp]) AND \\"tsa master\\"[Properties]" \\
         > esearch.out
 
-    count=\$(grep "<Count>" esearch.out | cut -d '>' -f 2 | cut -d '<' -f 1)
+    count=\$(grep -o '<Count>[0-9]*</Count>' esearch.out | head -n 1 | sed 's/<[^>]*>//g')
+    count=\${count:-0}
 
-    echo -e "taxid\\tspecie\\ttsa" > ${taxid}.tsa_ids.tsv
+    printf "taxid\\tspecie\\ttsa\\n" \\
+        > "${taxid}.tsa_ids.tsv"
 
-    if [[ "\$count" != "0" ]]; then
-        efetch -format gb < esearch.out > ${taxid}.tsa_ids.out
+    if [[ "\$count" != "0" ]]
+    then
+        efetch -format gb < esearch.out \\
+            > "${taxid}.tsa_ids.out"
 
-        grep "^ACCESSION" ${taxid}.tsa_ids.out \\
+        grep "^ACCESSION" "${taxid}.tsa_ids.out" \\
             | awk '{ print \$2 }' \\
-            > ${taxid}.tsa.list
+            > "${taxid}.tsa.list"
 
-        grep "/db_xref=\\"taxon:" ${taxid}.tsa_ids.out \\
+        grep '/db_xref="taxon:' "${taxid}.tsa_ids.out" \\
             | sed 's/.*taxon://' \\
             | cut -d '"' -f 1 \\
-            > ${taxid}.organism_taxid.list
+            > "${taxid}.organism_taxid.list"
 
-        grep "^  ORGANISM" ${taxid}.tsa_ids.out \\
+        grep "^  ORGANISM" "${taxid}.tsa_ids.out" \\
             | sed 's/^  ORGANISM  //' \\
             | awk '
-                BEGIN { OFS="\\t" }
                 {
                     specie = \$0
                     sub(/\\(.*/, "", specie)
                     gsub(/^ +| +\$/, "", specie)
                     gsub(/ +/, "-", specie)
-                    specie = tolower(specie)
-                    print specie
+                    print tolower(specie)
                 }
-            ' > ${taxid}.specie.list
+            ' \\
+            > "${taxid}.specie.list"
 
         paste \\
-            ${taxid}.organism_taxid.list \\
-            ${taxid}.specie.list \\
-            ${taxid}.tsa.list \\
-            >> ${taxid}.tsa_ids.tsv
+            "${taxid}.organism_taxid.list" \\
+            "${taxid}.specie.list" \\
+            "${taxid}.tsa.list" \\
+            >> "${taxid}.tsa_ids.tsv"
     else
-        echo "taxid,specie,tsa" >  ${taxid}.tsa_ids.out
+        touch "${taxid}.tsa_ids.out"
     fi
+    """
+
+    stub:
+    """
+    command -v esearch >/dev/null
+    command -v efetch >/dev/null
+
+    touch "${taxid}.tsa_ids.tsv"
+    touch "${taxid}.tsa_ids.out"
     """
 }

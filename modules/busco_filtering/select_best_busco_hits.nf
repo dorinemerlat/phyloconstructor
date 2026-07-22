@@ -1,5 +1,7 @@
 process SELECT_BEST_BUSCO_HITS {
     tag "${label}/${specie}"
+    memory '2 GB'
+    time '1h'
 
     input:
     tuple val(label), val(taxid), val(specie), path(full_tables)
@@ -9,8 +11,16 @@ process SELECT_BEST_BUSCO_HITS {
 
     script:
     """
+    # Select the best BUSCO record for each ortholog across candidate datasets.
     select_best_busco_hits.py \\
         --full-tables ${full_tables.join(' ')} \\
-        --output ${specie}_complete_table.tsv
+        --output "${specie}_complete_table.tsv"
+    """
+
+    stub:
+    """
+    command -v select_best_busco_hits.py >/dev/null
+
+    touch "${specie}_complete_table.tsv"
     """
 }
