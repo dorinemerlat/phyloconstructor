@@ -1,0 +1,2192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1129.4117"
+   height="1000.6471"
+   viewBox="0 0 1129.4117 1000.6471"
+   version="1.1"
+   id="svg123"
+   sodipodi:docname="phyloconstructor.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   inkscape:export-filename="phyloconstructor.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview123"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.97"
+     inkscape:cx="521.06599"
+     inkscape:cy="584.51777"
+     inkscape:window-width="3440"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg123" />
+  <defs
+     id="defs1" />
+  <metadata
+     id="diagram-manifest"
+     data-schema-version="1.0"><![CDATA[{"groups":[{"color":"#e63946","id":"focal_species","label":"Focal species path"},{"color":"#2db572","id":"focal_taxid","label":"Focal taxid path"},{"color":"#0570b0","id":"outgroup_species","label":"Outgroup species path"},{"color":"#ff8c00","id":"user_data","label":"User-provided data"},{"color":"#686868","id":"main","label":"Main workflow"}],"height":1623,"match":{"flags":"i","target":"fqProcessName","type":"regex"},"nodes":[{"groups":["user_data"],"h":12.0,"id":"user_proteomes","label":"User-provided proteomes","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":12.0,"x":1298.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"download_uniprot","label":"Download UniProt proteomes","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":586.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"download_ncbi_proteomes","label":"Download NCBI proteomes","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":730.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"download_ncbi_assemblies","label":"Download NCBI genome assemblies","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":874.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"download_tsa","label":"Download TSA transcriptomes","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":1018.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"download_sra","label":"Download SRA sequencing reads","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":1162.0,"y":120.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"rnaspades","label":"Assemble transcriptomes (rnaSPAdes)","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":1162.0,"y":160.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"filter_transcripts","label":"Transcript filtering and dereplication (≥300 bp, CD-HIT-EST)","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":899.1,"y":480.0},{"groups":["focal_species","focal_taxid","outgroup_species"],"h":12.0,"id":"transdecoder","label":"Predict coding sequences (TransDecoder)","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":20.0,"x":899.1,"y":520.0},{"groups":["focal_species","focal_taxid","main","outgroup_species","user_data"],"h":12.0,"id":"candidate_datasets","label":"Candidate BUSCO datasets","patterns":[],"r":6.0,"region":"data_acquisition","rx":6.0,"w":28.0,"x":895.1,"y":640.0},{"groups":["main"],"h":12.0,"id":"run_busco","label":"Assess completeness (BUSCO)","patterns":[],"r":6.0,"region":"busco_analysis","rx":6.0,"w":12.0,"x":722.0,"y":836.0},{"groups":["main"],"h":12.0,"id":"select_busco_sequences","label":"Select complete BUSCO sequences (single-copy or all)","patterns":[],"r":6.0,"region":"busco_analysis","rx":6.0,"w":12.0,"x":722.0,"y":876.0},{"groups":["main"],"h":12.0,"id":"select_best_dataset","label":"Select best BUSCO sequence per species and gene family","patterns":[],"r":6.0,"region":"busco_analysis","rx":6.0,"w":12.0,"x":722.0,"y":916.0},{"groups":["main"],"h":12.0,"id":"select_orthogroups","label":"Filter species and BUSCO families by BUSCO completeness and taxon occupancy","patterns":[],"r":6.0,"region":"busco_analysis","rx":6.0,"w":12.0,"x":722.0,"y":956.0},{"groups":["main"],"h":12.0,"id":"mafft","label":"Multiple sequence alignment (MAFFT)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":546.0,"y":1135.5},{"groups":["main"],"h":12.0,"id":"trimal","label":"Alignment trimming (trimAl)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":546.0,"y":1175.5},{"groups":["main"],"h":12.0,"id":"concat_alignments","label":"Concatenate trimmed alignments (PhyKIT)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":452.0,"y":1335.5},{"groups":["main"],"h":12.0,"id":"iqtree_supermatrix","label":"Maximum-likelihood supermatrix tree (IQ-TREE)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":452.0,"y":1375.5},{"groups":["main"],"h":12.0,"id":"iqtree_gene","label":"Infer gene trees (IQ-TREE)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":640.0,"y":1335.5},{"groups":["main"],"h":12.0,"id":"astral","label":"Infer species tree (ASTRAL)","patterns":[],"r":6.0,"region":"phylogeny","rx":6.0,"w":12.0,"x":640.0,"y":1375.5}],"regions":[{"id":"data_acquisition","label":"Collect candidate datasets"},{"id":"busco_analysis","label":"BUSCO assessment and dataset selection"},{"id":"phylogeny","label":"Alignment and phylogenomic inference"}],"title":"PhyloConstructor","version":"1.0","width":1580}]]></metadata>
+  <style
+     id="style1">.nf-metro-title { fill: var(--nfm-map-title-color, #111111); }
+.nf-metro-station-label { fill: var(--nfm-map-label-color, #333333); }
+.nf-metro-section-box { fill: var(--nfm-map-section-fill, #ededed); stroke: var(--nfm-map-section-stroke, #e6e6e6); }
+.nf-metro-section-label { fill: var(--nfm-map-section-label-color, #666666); }
+.nf-metro-group-label { fill: var(--nfm-map-section-label-color, #666666); }
+.nf-metro-group-underline { stroke: var(--nfm-map-section-label-color, #666666); }
+.nf-metro-legend-bg { fill: var(--nfm-map-legend-bg, rgba(255, 255, 255, 0.8)); }
+.nf-metro-legend-text { fill: var(--nfm-map-legend-text-color, #333333); }
+.nf-metro-marker-stroke { stroke: var(--nfm-map-marker-stroke, #333333); }
+.nf-metro-label-halo { fill: var(--nfm-map-bg, #ffffff); stroke: var(--nfm-map-bg, #ffffff); }</style>
+  <style
+     id="style2">@media (prefers-color-scheme: dark) {
+    .nf-metro-section-label { fill: #d0d0d0; }
+    .nf-metro-section-num-circle { fill: #777777; }
+    .nf-metro-title { fill: #ffffff; }
+}
+</style>
+  <rect
+     x="30.5"
+     y="724.5"
+     width="1065.3164"
+     height="234.58176"
+     rx="8"
+     ry="8"
+     fill="#ededed"
+     stroke="#e6e6e6"
+     stroke-width="1"
+     class="nf-metro-section-box"
+     data-section-id="phylogeny"
+     data-section-lines="main"
+     id="rect6" />
+  <circle
+     cx="41"
+     cy="709"
+     r="11"
+     fill="#333333"
+     class="nf-metro-section-num-circle"
+     data-section-id="phylogeny"
+     id="circle6" />
+  <text
+     x="41"
+     y="709"
+     font-size="12px"
+     fill="#ffffff"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     text-anchor="middle"
+     dy="3.6000001"
+     data-section-id="phylogeny"
+     id="text7">3</text>
+  <text
+     x="57"
+     y="709"
+     font-size="17px"
+     fill="#666666"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     dy="5.1000004"
+     class="nf-metro-section-label"
+     data-section-id="phylogeny"
+     id="text8">Alignment and phylogenomic inference</text>
+  <text
+     x="60"
+     y="30"
+     font-size="26px"
+     fill="#111111"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     class="nf-metro-title"
+     id="text2">PhyloConstructor</text>
+  <circle
+     cx="41"
+     cy="57"
+     r="11"
+     fill="#333333"
+     class="nf-metro-section-num-circle"
+     data-section-id="data_acquisition"
+     id="circle2" />
+  <text
+     x="41"
+     y="57"
+     font-size="12px"
+     fill="#ffffff"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     text-anchor="middle"
+     dy="3.6000001"
+     data-section-id="data_acquisition"
+     id="text3">1</text>
+  <text
+     x="57"
+     y="57"
+     font-size="17px"
+     fill="#666666"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     dy="5.1000004"
+     class="nf-metro-section-label"
+     data-section-id="data_acquisition"
+     id="text4">Collect candidate datasets</text>
+  <rect
+     x="33.047668"
+     y="500.32355"
+     width="1063.3164"
+     height="177.70271"
+     rx="8"
+     ry="8"
+     fill="#ededed"
+     stroke="#e6e6e6"
+     stroke-width="0.999998"
+     class="nf-metro-section-box"
+     data-section-id="busco_analysis"
+     data-section-lines="main"
+     id="rect4" />
+  <path
+     d="M 430.52588,649.29588 V 809.1597"
+     stroke="#686868"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path18" />
+  <circle
+     cx="41"
+     cy="481"
+     r="11"
+     fill="#333333"
+     class="nf-metro-section-num-circle"
+     data-section-id="busco_analysis"
+     id="circle4" />
+  <text
+     x="41"
+     y="481"
+     font-size="12px"
+     fill="#ffffff"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     text-anchor="middle"
+     dy="3.6000001"
+     data-section-id="busco_analysis"
+     id="text5">2</text>
+  <text
+     x="57"
+     y="481"
+     font-size="17px"
+     fill="#666666"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     font-weight="bold"
+     dy="5.1000004"
+     class="nf-metro-section-label"
+     data-section-id="busco_analysis"
+     id="text6">BUSCO assessment and dataset selection</text>
+  <text
+     x="1550"
+     y="1615"
+     font-size="8px"
+     fill="rgba(150, 150, 150, 0.6)"
+     font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+     text-anchor="end"
+     id="text123">created with nf-metro v1.1.0</text>
+  <rect
+     x="29.999998"
+     y="73.682037"
+     width="1065.3164"
+     height="376.17279"
+     rx="8"
+     ry="8"
+     fill="#ededed"
+     stroke="#e6e6e6"
+     stroke-width="0.999997"
+     class="nf-metro-section-box"
+     data-section-id="data_acquisition"
+     data-section-lines="focal_species,focal_taxid,main,outgroup_species,user_data"
+     id="rect2" />
+  <g
+     id="g21"
+     transform="translate(-246.23389,-213.16818)">
+    <g
+       id="g40"
+       transform="translate(-180,0.31494237)">
+      <text
+         x="881.41699"
+         y="640"
+         font-size="14px"
+         fill="#ffffff"
+         stroke="#ffffff"
+         stroke-width="3"
+         stroke-linejoin="round"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         aria-hidden="true"
+         class="nf-metro-label-halo"
+         text-anchor="end"
+         dominant-baseline="central"
+         id="text116"><tspan
+           style="text-align:start;text-anchor:start"
+           id="tspan40">Candidate datasets for BUSCO assessment</tspan></text>
+      <text
+         x="881.41699"
+         y="640"
+         font-size="14px"
+         fill="#333333"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         text-anchor="end"
+         dominant-baseline="central"
+         data-station-id="candidate_datasets"
+         class="nf-metro-station-label"
+         id="text117"
+         style="text-align:start;text-anchor:start">Candidate datasets for BUSCO assessment</text>
+    </g>
+  </g>
+  <g
+     id="g24"
+     transform="translate(-430.94052,-306.45991)"
+     style="stroke:none;stroke-opacity:1">
+    <g
+       id="g13-2-7-7"
+       transform="matrix(-1,0,0,1,1754.6047,239.56017)"
+       style="fill:none;stroke:none;stroke-opacity:1">
+      <path
+         d="m 969.10466,96.939832 4e-5,485.533168 c 0,6.66667 -3.15416,10.21108 -9.72491,11.33846 l -54.44518,9.34151 c -5.81482,0.99769 -9.77971,5.04109 -9.8296,9.92924 -0.0116,1.13963 0.0154,2.67478 0.0499,3.84889"
+         stroke="#0570b0"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-outgroup_species"
+         data-line-id="outgroup_species"
+         id="path28-6-0-0-3-0-5-3"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;stroke:none;stroke-opacity:1" />
+      <path
+         d="m 965.1383,104.89974 -0.0335,474.22042 c -4.7e-4,6.66667 -3.30425,10.01936 -9.87093,11.17014 l -54.26599,9.50983 c -6.5666,1.15076 -9.84625,5.0801 -9.84625,11.74677 v 3.35284"
+         stroke="#2db572"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_taxid"
+         data-line-id="focal_taxid"
+         id="path36-1-2-9-8-9-4-4"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;stroke:none;stroke-opacity:1" />
+      <path
+         d="m 961.10504,98.944287 -3.4e-4,476.823033 c 0,6.66667 -3.1399,9.99312 -9.70698,11.14144 l -48.77558,8.52892 -5.68753,1.00961 c -6.56405,1.1652 -9.84625,5.0801 -9.84625,11.74677 v 6.70568"
+         stroke="#e63946"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_species"
+         data-line-id="focal_species"
+         id="path44-8-8-0-9-7-12-9"
+         sodipodi:nodetypes="csscssc"
+         style="fill:none;fill-opacity:1;stroke:none;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     id="g9"
+     transform="translate(-255.12842,-101.03297)">
+    <g
+       id="g10"
+       transform="translate(0,24)">
+      <rect
+         x="1143.9221"
+         y="429.13794"
+         width="196.52264"
+         height="86.401955"
+         rx="6"
+         ry="6"
+         fill="rgba(255, 255, 255, 0.8)"
+         class="nf-metro-legend-bg"
+         id="rect117"
+         style="fill:#f9f9f9;stroke-width:0.999998" />
+      <g
+         id="g7"
+         transform="translate(-2.1054688e-5,-0.58317718)">
+        <g
+           id="g27"
+           transform="translate(263.73626,10.989011)">
+          <path
+             d="m 900.58636,438.3154 h 24"
+             stroke="#e63946"
+             stroke-width="3"
+             stroke-linecap="round"
+             id="path117" />
+          <text
+             x="936.58636"
+             y="442.02048"
+             font-size="16px"
+             fill="#333333"
+             font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+             class="nf-metro-legend-text"
+             id="text118"
+             style="font-size:14px">Studied species</text>
+        </g>
+        <g
+           id="g32"
+           transform="translate(263.73626,10.86463)">
+          <path
+             d="m 900.58636,461.97202 h 24"
+             stroke="#2db572"
+             stroke-width="3"
+             stroke-linecap="round"
+             id="path118" />
+          <text
+             x="936.58636"
+             y="466.98276"
+             font-size="16px"
+             fill="#333333"
+             font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+             class="nf-metro-legend-text"
+             id="text119"
+             style="font-size:14px">Studied taxID taxon</text>
+        </g>
+        <g
+           id="g33"
+           transform="translate(263.73626,11.112324)">
+          <path
+             d="m 900.58636,485.342 h 24"
+             stroke="#0570b0"
+             stroke-width="3"
+             stroke-linecap="round"
+             id="path119" />
+          <text
+             x="936.58636"
+             y="485.36847"
+             font-size="16px"
+             fill="#333333"
+             font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+             dy="3.6000001"
+             class="nf-metro-legend-text"
+             id="text120"
+             style="font-size:14px">Outgroup species</text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g
+     id="g9-2-4"
+     transform="translate(-376.47412,-142.5)">
+    <path
+       d="m 1161.0952,255.73529 v 167.1257 c 0,6.66667 -1.7728,10.39473 -5.3288,11.13378 l -133.4376,27.73244 c -3.556,0.73905 -5.3288,4.46711 -5.3288,11.13378 V 480"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path25-2-8"
+       sodipodi:nodetypes="cssssc" />
+    <path
+       d="M 1165.0952,259.99998 V 426.4305 c 0,6.66667 -1.7728,10.39473 -5.3288,11.13378 l -133.4376,27.73243 c -3.556,0.73905 -5.3288,4.46712 -5.3288,11.13379 V 480"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path33-1-8"
+       sodipodi:nodetypes="cssssc" />
+    <path
+       d="M 1169.0952,254.26471 V 430 c 0,6.66667 -1.7728,10.39473 -5.3288,11.13378 l -133.4376,27.73244 C 1026.7728,469.60527 1025,473.33333 1025,480 v 0"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path41-6-2"
+       sodipodi:nodetypes="cssssc" />
+  </g>
+  <g
+     id="g23"
+     transform="translate(-464.57892,-188)">
+    <path
+       d="M 1109.1048,302.2941 V 513.84621"
+       stroke="#2db572"
+       stroke-width="3"
+       stroke-linecap="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path32-6"
+       style="stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="M 1113.1048,297.67647 V 513.84864"
+       stroke="#e63946"
+       stroke-width="3"
+       stroke-linecap="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path40-14"
+       style="stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="g11"
+     transform="translate(-549.99075,-235.40887)">
+    <path
+       d="m 1198.5166,345.08534 v 254.79653 c 0,6.66667 -3.2795,10.59668 -9.8463,11.74677 L 994.34624,645.6621 c -6.56672,1.15008 -9.84625,5.0801 -9.84625,11.74677 v 0"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path28-6-0"
+       sodipodi:nodetypes="cssssc"
+       style="stroke:#e63946;stroke-opacity:1" />
+    <path
+       d="m 1194.5166,349.70297 10e-5,246.82606 c 0,6.66667 -3.2795,10.59668 -9.8463,11.74677 l -194.32416,34.03346 c -6.56672,1.15008 -9.84625,5.0801 -9.84625,11.74677 v 3.35284"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path36-1-2"
+       sodipodi:nodetypes="cssssc" />
+    <path
+       d="m 1190.4162,350.71267 0.1004,242.46352 c 0,6.66667 -3.2795,10.59669 -9.8463,11.74678 l -194.32406,34.03345 c -6.56672,1.15008 -9.84625,5.0801 -9.84625,11.74677 v 6.70568"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path44-8-8"
+       sodipodi:nodetypes="cssssc"
+       style="stroke:#0570b0;stroke-opacity:1" />
+  </g>
+  <path
+     d="M 208.52588,108.17647 V 364.473 c 0,6.66667 3.27556,10.61939 9.8463,11.74677 l 198.35736,34.03346 c 5.71054,0.97979 9.7797,5.04109 9.82963,9.92924 0.0223,2.18292 0.0166,1.81753 0.0166,1.81753"
+     stroke="#0570b0"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-outgroup_species"
+     data-line-id="outgroup_species"
+     id="path28-6-0-8-7"
+     sodipodi:nodetypes="cssssc"
+     style="stroke:#0570b0;stroke-opacity:1" />
+  <path
+     d="m 212.52583,109.67647 -5e-5,251.44369 c 0,6.66667 3.27563,10.61902 9.8463,11.74677 l 198.29091,34.03346 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 V 422"
+     stroke="#2db572"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-focal_taxid"
+     data-line-id="focal_taxid"
+     id="path36-1-2-2-7"
+     sodipodi:nodetypes="cssssc"
+     style="stroke:#2db572;stroke-opacity:1" />
+  <path
+     d="m 66.204535,115.99998 v 224.73178 c 0,6.66667 3.275539,9.90692 9.8463,11.03418 l 342.357395,58.73393 c 5.71056,0.97969 9.7797,5.75368 9.82963,10.64183 0.0223,2.18292 0.0166,1.81753 0.0166,1.81753"
+     stroke="#0570b0"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-outgroup_species"
+     data-line-id="outgroup_species"
+     id="path28-6-0-8-7-1"
+     sodipodi:nodetypes="cssssc"
+     style="stroke:#0570b0;stroke-opacity:1" />
+  <path
+     d="m 216.52587,111.17647 1e-5,246.59085 c 0,6.66667 3.27563,10.61903 9.8463,11.74678 l 198.29081,34.03345 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 V 422"
+     stroke="#e63946"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-focal_species"
+     data-line-id="focal_species"
+     id="path44-8-8-9-7"
+     sodipodi:nodetypes="cssssc"
+     style="stroke:#e63946;stroke-opacity:1" />
+  <path
+     d="m 70.326091,117.49998 9e-6,214.06687 c 0,6.66667 3.27534,11.80837 9.8463,12.93443 l 344.55717,59.04627 c 6.57088,1.12604 9.84625,5.0801 9.84625,11.74677 V 422"
+     stroke="#e63946"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-focal_species"
+     data-line-id="focal_species"
+     id="path44-8-8-9-7-1"
+     sodipodi:nodetypes="cssssc"
+     style="stroke:#e63946;stroke-opacity:1" />
+  <g
+     id="g19"
+     transform="translate(105.02588,-73.32353)">
+    <path
+       d="m 103.5,181.5 v 256.29653 c 0,6.66667 3.27556,10.61939 9.8463,11.74677 l 198.35736,34.03346 c 5.71054,0.97979 9.7797,5.04109 9.82963,9.92924 0.0223,2.18292 0.0166,1.81753 0.0166,1.81753"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path28-6-0-8-7-14-2"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;fill-opacity:1;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       d="m 107.49995,183 -5e-5,251.44369 c 0,6.66667 3.27563,10.61902 9.8463,11.74677 l 198.29091,34.03346 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 v 3.35284"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path36-1-2-2-7-2-3"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;fill-opacity:1;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       d="m 111.49999,184.5 1e-5,246.59085 c 0,6.66667 3.27563,10.61903 9.8463,11.74678 l 198.29081,34.03345 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 v 6.70568"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path44-8-8-9-7-3-3"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;fill-opacity:1;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <g
+     id="g18"
+     transform="translate(-2)">
+    <path
+       d="M 210.52588,108.17647 V 364.473 c 0,6.66667 3.27556,10.61939 9.8463,11.74677 l 198.35736,34.03346 c 5.71054,0.97979 9.7797,5.04109 9.82963,9.92924 0.0223,2.18292 0.0166,1.81753 0.0166,1.81753"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path28-6-0-8-7-14"
+       sodipodi:nodetypes="cssssc"
+       style="stroke:#0570b0;stroke-opacity:1" />
+    <path
+       d="m 214.52583,109.67647 -5e-5,251.44369 c 0,6.66667 3.27563,10.61902 9.8463,11.74677 l 198.29091,34.03346 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 V 422"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path36-1-2-2-7-2"
+       sodipodi:nodetypes="cssssc"
+       style="stroke:#2db572;stroke-opacity:1" />
+    <path
+       d="m 218.52587,111.17647 1e-5,246.59085 c 0,6.66667 3.27563,10.61903 9.8463,11.74678 l 198.29081,34.03345 c 6.57059,1.12774 9.84625,5.0801 9.84625,11.74677 V 422"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path44-8-8-9-7-3"
+       sodipodi:nodetypes="cssssc"
+       style="stroke:#e63946;stroke-opacity:1" />
+  </g>
+  <g
+     id="g15"
+     style="fill:none"
+     transform="translate(-464.57892,-214)">
+    <g
+       id="g13-6"
+       transform="translate(0,21.100257)"
+       style="fill:none;stroke:#ededed;stroke-width:3;stroke-dasharray:none;stroke-opacity:1">
+      <path
+         d="m 969.10468,309.07621 2e-5,273.39679 c 0,6.66667 -3.28216,10.58155 -9.8463,11.74677 l -50.32399,8.9332 c -5.80897,1.03118 -9.77971,5.04109 -9.8296,9.92924 -0.0116,1.13963 0.0154,2.67478 0.0499,3.84889"
+         stroke="#0570b0"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-outgroup_species"
+         data-line-id="outgroup_species"
+         id="path28-6-0-0-3-3"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         d="m 965.10472,298.39972 8e-5,280.72044 c 0,6.66667 -3.2823,10.5808 -9.8463,11.74677 l -50.29082,8.9332 c -6.56392,1.16596 -9.84625,5.0801 -9.84625,11.74677 v 3.35284"
+         stroke="#2db572"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_taxid"
+         data-line-id="focal_taxid"
+         id="path36-1-2-9-8-6"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         d="m 961.1047,575.76732 c 0,6.66667 -3.28217,10.58156 -9.84628,11.74678 l -50.32401,8.93319 c -6.56405,1.16521 -9.84625,5.0801 -9.84625,11.74677 v 6.70568"
+         stroke="#e63946"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_species"
+         data-line-id="focal_species"
+         id="path44-8-8-0-9-1"
+         sodipodi:nodetypes="csssc"
+         style="fill:none;fill-opacity:1;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g13"
+       transform="translate(0,21.100257)"
+       style="fill:none">
+      <path
+         d="m 969.10468,309.07621 2e-5,273.39679 c 0,6.66667 -3.28216,10.58155 -9.8463,11.74677 l -50.32399,8.9332 c -5.80897,1.03118 -9.77971,5.04109 -9.8296,9.92924 -0.0116,1.13963 0.0154,2.67478 0.0499,3.84889"
+         stroke="#0570b0"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-outgroup_species"
+         data-line-id="outgroup_species"
+         id="path28-6-0-0-3"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;stroke:#e63946;stroke-opacity:1" />
+      <path
+         d="m 965.1048,310.39972 v 268.72044 c 0,6.66667 -3.2823,10.5808 -9.8463,11.74677 l -50.29082,8.9332 c -6.56392,1.16596 -9.84625,5.0801 -9.84625,11.74677 v 3.35284"
+         stroke="#2db572"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_taxid"
+         data-line-id="focal_taxid"
+         id="path36-1-2-9-8"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none" />
+      <path
+         d="m 961.10489,306.13504 -1.9e-4,269.63228 c 0,6.66667 -3.28217,10.58156 -9.84628,11.74678 l -50.32401,8.93319 c -6.56405,1.16521 -9.84625,5.0801 -9.84625,11.74677 v 6.70568"
+         stroke="#e63946"
+         stroke-width="3"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="metro-line-focal_species"
+         data-line-id="focal_species"
+         id="path44-8-8-0-9"
+         sodipodi:nodetypes="cssssc"
+         style="fill:none;fill-opacity:1;stroke:#0570b0;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     id="g20"
+     transform="translate(-391.75464,-183.073)">
+    <text
+       x="1056.0491"
+       y="520"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text108"><tspan
+         sodipodi:role="line"
+         id="tspan19"
+         x="1056.0491"
+         y="520"
+         style="text-align:start;text-anchor:start">Predict protein-coding</tspan><tspan
+         sodipodi:role="line"
+         id="tspan20"
+         x="1056.0491"
+         y="537.5"
+         style="text-align:start;text-anchor:start">sequences (TransDecoder)</tspan></text>
+    <text
+       x="1056.0491"
+       y="520"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="transdecoder"
+       class="nf-metro-station-label"
+       id="text109"><tspan
+         sodipodi:role="line"
+         id="tspan17"
+         x="1056.0491"
+         y="520"
+         style="text-align:start;text-anchor:start">Predict protein-coding</tspan><tspan
+         sodipodi:role="line"
+         id="tspan18"
+         x="1056.0491"
+         y="537.5"
+         style="text-align:start;text-anchor:start">sequences (TransDecoder)</tspan></text>
+  </g>
+  <g
+     id="g26"
+     transform="translate(-432.94052,-367.45991)">
+    <path
+       d="m 785.50002,483.45989 -2e-5,273.57328 c 0,6.66667 3.15416,10.21108 9.72491,11.33846 l 54.44518,9.34151 c 5.81482,0.99769 9.77971,5.04109 9.8296,9.92924 0.0116,1.13963 -0.0154,2.67478 -0.0499,3.84889"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path28-6-0-0-3-0-5-0"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       d="m 789.48039,477.51887 0.0195,276.16146 c 4.7e-4,6.66667 3.30425,10.01936 9.87093,11.17014 l 54.26599,9.50983 c 6.5666,1.15076 9.84625,5.0801 9.84625,11.74677 v 3.35284"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path36-1-2-9-8-9-4-9"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       d="M 793.49981,479.51873 793.5,750.32749 c 0,6.66667 3.1399,9.99312 9.70698,11.14144 l 48.77558,8.52892 5.68753,1.00961 c 6.56405,1.1652 9.84625,5.0801 9.84625,11.74677 v 6.70568"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path44-8-8-0-9-7-12-96"
+       sodipodi:nodetypes="csscssc"
+       style="fill:none;fill-opacity:1;stroke:#ededed;stroke-width:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <g
+     id="g25"
+     transform="translate(-464.57892,-214)">
+    <path
+       d="m 817.13842,329.99998 -2e-5,273.57328 c 0,6.66667 3.15416,10.21108 9.72491,11.33846 l 54.44518,9.34151 c 5.81482,0.99769 9.77971,5.04109 9.8296,9.92924 0.0116,1.13963 -0.0154,2.67478 -0.0499,3.84889"
+       stroke="#0570b0"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-outgroup_species"
+       data-line-id="outgroup_species"
+       id="path28-6-0-0-3-0-5"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none;stroke:#0570b0;stroke-opacity:1" />
+    <path
+       d="m 821.11962,331.49998 0.019,268.72044 c 4.7e-4,6.66667 3.30425,10.01936 9.87093,11.17014 l 54.26599,9.50983 c 6.5666,1.15076 9.84625,5.0801 9.84625,11.74677 V 636"
+       stroke="#2db572"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_taxid"
+       data-line-id="focal_taxid"
+       id="path36-1-2-9-8-9-4"
+       sodipodi:nodetypes="cssssc"
+       style="fill:none" />
+    <path
+       d="m 825.13812,326.05882 2.8e-4,270.80876 c 10e-6,6.66667 3.1399,9.99312 9.70698,11.14144 l 48.77558,8.52892 5.68753,1.00961 c 6.56405,1.1652 9.84625,5.0801 9.84625,11.74677 V 636"
+       stroke="#e63946"
+       stroke-width="3"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       class="metro-line-focal_species"
+       data-line-id="focal_species"
+       id="path44-8-8-0-9-7-12"
+       sodipodi:nodetypes="csscssc"
+       style="fill:none;fill-opacity:1;stroke:#e63946;stroke-opacity:1" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="rnaspades"
+     data-node-cx="1162.0"
+     data-node-cy="160.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g52"
+     transform="translate(-373.47412,31.49999)">
+    <rect
+       x="1152"
+       y="154"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="rnaspades"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Assemble transcriptomes (rnaSPAdes)"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect52" />
+  </g>
+  <g
+     id="g135"
+     transform="translate(-337.97412,31.262475)">
+    <text
+       x="1147"
+       y="160"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text94"><tspan
+         sodipodi:role="line"
+         id="tspan133"
+         x="1147"
+         y="160"
+         style="text-align:start;text-anchor:start">Assemble transcripts (rnaSPAdes)</tspan></text>
+    <text
+       x="1147"
+       y="160"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="rnaspades"
+       class="nf-metro-station-label"
+       id="text95"><tspan
+         sodipodi:role="line"
+         id="tspan131"
+         x="1147"
+         y="160"
+         style="text-align:start;text-anchor:start">Assemble transcripts (rnaSPAdes)</tspan></text>
+  </g>
+  <g
+     id="g1"
+     transform="translate(174.91034,-214.23755)">
+    <g
+       id="g41"
+       transform="translate(-26.373049)">
+      <text
+         x="884.1048"
+         y="480"
+         font-size="14px"
+         fill="#ffffff"
+         stroke="#ffffff"
+         stroke-width="3"
+         stroke-linejoin="round"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         aria-hidden="true"
+         class="nf-metro-label-halo"
+         text-anchor="end"
+         dominant-baseline="central"
+         id="text100">Filter and dereplicate transcripts (≥300 bp, CD-HIT-EST)</text>
+      <text
+         x="884.1048"
+         y="480"
+         font-size="14px"
+         fill="#333333"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         text-anchor="end"
+         dominant-baseline="central"
+         data-station-id="filter_transcripts"
+         class="nf-metro-station-label"
+         id="text101">Filter and dereplicate transcripts (≥300 bp, CD-HIT-EST)</text>
+    </g>
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="filter_transcripts"
+     data-node-cx="899.1"
+     data-node-cy="480.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g53"
+     transform="translate(-254.57892,-214.00004)">
+    <rect
+       x="889.1048"
+       y="474"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="filter_transcripts"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Transcript filtering and dereplication (≥300 bp, CD-HIT-EST)"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect53" />
+  </g>
+  <rect
+     x="634.52588"
+     y="339.99997"
+     width="20"
+     height="12"
+     rx="6"
+     ry="6"
+     fill="#ffffff"
+     stroke="#333333"
+     stroke-width="2"
+     class="nf-metro-station"
+     data-station-id="transdecoder"
+     data-station-lines="focal_species,focal_taxid,outgroup_species"
+     data-station-label="Predict coding sequences (TransDecoder)"
+     data-section-id="data_acquisition"
+     data-section-name="Collect candidate datasets"
+     id="rect54" />
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_uniprot"
+     data-node-cx="586.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g47-4"
+     transform="translate(-517.4741,-8.50002)">
+    <rect
+       x="576"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_uniprot"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download UniProt proteomes"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect47-8" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_uniprot"
+     data-node-cx="586.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g47"
+     transform="translate(-373.47412,-8.50002)">
+    <rect
+       x="576"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_uniprot"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download UniProt proteomes"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect47" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_ncbi_assemblies"
+     data-node-cx="874.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g49"
+     transform="translate(-373.47412,-8.50002)">
+    <rect
+       x="864"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_ncbi_assemblies"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download NCBI genome assemblies"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect49" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_sra"
+     data-node-cx="1162.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g51"
+     transform="translate(-373.47412,-8.50002)">
+    <rect
+       x="1152"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_sra"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download SRA sequencing reads"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect51" />
+  </g>
+  <g
+     id="g127"
+     transform="translate(-409.479,-13.6016)">
+    <g
+       id="g2"
+       transform="translate(70.554687,-12.6291)">
+      <text
+         x="571"
+         y="120"
+         font-size="14px"
+         fill="#ffffff"
+         stroke="#ffffff"
+         stroke-width="3"
+         stroke-linejoin="round"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         aria-hidden="true"
+         class="nf-metro-label-halo"
+         text-anchor="end"
+         dominant-baseline="central"
+         id="text65"><tspan
+           sodipodi:role="line"
+           id="tspan126"
+           x="571"
+           y="120"
+           style="text-align:start;text-anchor:start">Download</tspan><tspan
+           sodipodi:role="line"
+           x="571"
+           y="137.5"
+           style="text-align:start;text-anchor:start"
+           id="tspan129">UniProt</tspan><tspan
+           sodipodi:role="line"
+           id="tspan127"
+           x="571"
+           y="155"
+           style="text-align:start;text-anchor:start">proteomes</tspan></text>
+      <text
+         x="571.03076"
+         y="120"
+         font-size="14px"
+         fill="#333333"
+         font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+         font-weight="bold"
+         text-anchor="end"
+         dominant-baseline="central"
+         data-station-id="download_uniprot"
+         class="nf-metro-station-label"
+         id="text66"
+         style="text-align:start;direction:ltr;text-anchor:start"><tspan
+           sodipodi:role="line"
+           id="tspan124"
+           x="571.03076"
+           y="120">Download</tspan><tspan
+           sodipodi:role="line"
+           x="571.03076"
+           y="137.5"
+           id="tspan128">UniProt</tspan><tspan
+           sodipodi:role="line"
+           id="tspan125"
+           x="571.03076"
+           y="155">proteomes</tspan></text>
+    </g>
+  </g>
+  <g
+     id="g3"
+     transform="translate(-368.92432,-8.64525)">
+    <text
+       x="745"
+       y="111.6"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text67"><tspan
+         x="745"
+         dy="0em"
+         id="tspan66">Download NCBI</tspan><tspan
+         x="745"
+         dy="1.2em"
+         id="tspan67">proteomes</tspan></text>
+    <text
+       x="745"
+       y="111.6"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="download_ncbi_proteomes"
+       class="nf-metro-station-label"
+       id="text69"><tspan
+         x="745"
+         dy="0em"
+         id="tspan68">Download NCBI</tspan><tspan
+         x="745"
+         dy="1.2em"
+         id="tspan69">proteomes</tspan></text>
+  </g>
+  <g
+     id="g4"
+     transform="translate(-368.47315,-7.34642)">
+    <text
+       x="889"
+       y="103.2"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text72"><tspan
+         x="889"
+         dy="0em"
+         id="tspan70">Download NCBI</tspan><tspan
+         x="889"
+         dy="1.2em"
+         id="tspan71">genome</tspan><tspan
+         x="889"
+         dy="1.2em"
+         id="tspan72">assemblies</tspan></text>
+    <text
+       x="889"
+       y="103.2"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="download_ncbi_assemblies"
+       class="nf-metro-station-label"
+       id="text75"><tspan
+         x="889"
+         dy="0em"
+         id="tspan73">Download NCBI</tspan><tspan
+         x="889"
+         dy="1.2em"
+         id="tspan74">genome</tspan><tspan
+         x="889"
+         dy="1.2em"
+         id="tspan75">assemblies</tspan></text>
+  </g>
+  <g
+     id="g5"
+     transform="translate(-368.18604,-8.64525)">
+    <text
+       x="1033"
+       y="111.6"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text77"><tspan
+         x="1033"
+         dy="0em"
+         id="tspan76">Download TSA</tspan><tspan
+         x="1033"
+         dy="1.2em"
+         id="tspan77">transcriptomes</tspan></text>
+    <text
+       x="1033"
+       y="111.6"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="download_tsa"
+       class="nf-metro-station-label"
+       id="text79"><tspan
+         x="1033"
+         dy="0em"
+         id="tspan78">Download TSA</tspan><tspan
+         x="1033"
+         dy="1.2em"
+         id="tspan79">transcriptomes</tspan></text>
+  </g>
+  <g
+     id="g6"
+     transform="translate(-368.30225,-7.34642)">
+    <text
+       x="1177"
+       y="103.2"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text82"><tspan
+         x="1177"
+         dy="0em"
+         id="tspan80">Download SRA</tspan><tspan
+         x="1177"
+         dy="1.2em"
+         id="tspan81">sequencing</tspan><tspan
+         x="1177"
+         dy="1.2em"
+         id="tspan82">reads</tspan></text>
+    <text
+       x="1177"
+       y="103.2"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="download_sra"
+       class="nf-metro-station-label"
+       id="text85"><tspan
+         x="1177"
+         dy="0em"
+         id="tspan83">Download SRA</tspan><tspan
+         x="1177"
+         dy="1.2em"
+         id="tspan84">sequencing</tspan><tspan
+         x="1177"
+         dy="1.2em"
+         id="tspan85">reads</tspan></text>
+  </g>
+  <g
+     id="g8"
+     transform="translate(-486.50763,0.79158)">
+    <text
+       x="570.58331"
+       y="102.07772"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text87"><tspan
+         x="570.58331"
+         dy="0"
+         id="tspan86">User-provided</tspan><tspan
+         x="570.58331"
+         dy="16.800001"
+         id="tspan87">proteomes</tspan></text>
+    <text
+       x="570.58331"
+       y="102.07772"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="user_proteomes"
+       class="nf-metro-station-label"
+       id="text89"><tspan
+         x="570.58331"
+         dy="0"
+         id="tspan88">User-provided</tspan><tspan
+         x="570.58331"
+         dy="16.800001"
+         id="tspan89">proteomes</tspan></text>
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_ncbi_proteomes"
+     data-node-cx="730.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g48"
+     transform="translate(-373.47412,-8.50002)">
+    <rect
+       x="720"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_ncbi_proteomes"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download NCBI proteomes"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect48" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="download_tsa"
+     data-node-cx="1018.0"
+     data-node-cy="120.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,outgroup_species"
+     data-node-region="data_acquisition"
+     data-node-w="20.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g50"
+     transform="translate(-373.47412,-8.50002)">
+    <rect
+       x="1008"
+       y="114"
+       width="20"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="download_tsa"
+       data-station-lines="focal_species,focal_taxid,outgroup_species"
+       data-station-label="Download TSA transcriptomes"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect50" />
+  </g>
+  <path
+     d="m 430.52588,566.61384 v 40"
+     stroke="#686868"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path9" />
+  <path
+     d="m 430.52588,606.61384 v 40"
+     stroke="#686868"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path10" />
+  <rect
+     x="424.52588"
+     y="640.61383"
+     width="12"
+     height="12"
+     rx="6"
+     ry="6"
+     fill="#ffffff"
+     stroke="#333333"
+     stroke-width="2"
+     class="nf-metro-station"
+     data-station-id="select_orthogroups"
+     data-station-lines="main"
+     data-station-label="Filter species and BUSCO families by BUSCO completeness and taxon occupancy"
+     data-section-id="busco_analysis"
+     data-section-name="BUSCO assessment and dataset selection"
+     id="rect59" />
+  <g
+     id="g30"
+     transform="translate(2.8203092)">
+    <text
+       x="453.02588"
+       y="526.61383"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text90"
+       style="text-align:start;text-anchor:start">Assess completeness (BUSCO)</text>
+    <text
+       x="453.02588"
+       y="526.61383"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="run_busco"
+       class="nf-metro-station-label"
+       id="text91"
+       style="text-align:start;text-anchor:start">Assess completeness (BUSCO)</text>
+  </g>
+  <g
+     id="g29"
+     transform="translate(2.8203092)">
+    <text
+       x="452.52002"
+       y="566.61383"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text96"
+       style="text-align:start;text-anchor:start">Select complete BUSCO hits (single-copy or all)</text>
+    <text
+       x="452.52002"
+       y="566.61383"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="select_busco_sequences"
+       class="nf-metro-station-label"
+       id="text97"
+       style="text-align:start;text-anchor:start">Select complete BUSCO hits (single-copy or all)</text>
+  </g>
+  <g
+     id="g28"
+     transform="translate(2.8207975)">
+    <text
+       x="452.52002"
+       y="606.61383"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text104"
+       style="text-align:start;text-anchor:start;white-space:pre;inline-size:436.681;display:inline"
+       xml:space="preserve"><tspan
+         x="452.52002"
+         y="606.61383"
+         id="tspan1">Select best BUSCO hit per species and orthologous gene family</tspan></text>
+    <text
+       x="452.52002"
+       y="606.61383"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="select_best_dataset"
+       class="nf-metro-station-label"
+       id="text105"
+       style="text-align:start;text-anchor:start">Select best BUSCO hit per species and orthologous gene family</text>
+  </g>
+  <g
+     id="g22"
+     transform="translate(2.8203092)">
+    <text
+       x="451.99365"
+       y="646.61383"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text112"
+       style="text-align:start;text-anchor:start">Filter species and ortholog families by BUSCO completeness and taxon occupancy</text>
+    <text
+       x="451.99365"
+       y="646.61383"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="select_orthogroups"
+       class="nf-metro-station-label"
+       id="text113"
+       style="text-align:start;text-anchor:start">Filter species and ortholog families by BUSCO completeness and taxon occupancy</text>
+  </g>
+  <path
+     d="m 430.52587,761.67212 v 40"
+     stroke="#686868"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path11" />
+  <path
+     d="m 430.52587,801.67212 v 0 c 0,6.66667 -3.17559,11.01327 -9.52677,13.0398 l -74.96592,23.9204 c -6.35118,2.02653 -9.52677,6.37313 -9.52677,13.0398 v 63.99998"
+     stroke="#686868"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path12"
+     sodipodi:nodetypes="csccsc" />
+  <path
+     d="m 430.52587,801.67212 v 0 c 0,6.66667 3.17559,11.01327 9.52678,13.0398 l 74.96591,23.9204 c 6.35118,2.02653 9.52677,6.37313 9.52677,13.0398 v 63.99998"
+     stroke="#686868"
+     stroke-width="3"
+     fill="none"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     class="metro-line-main"
+     data-line-id="main"
+     id="path14"
+     sodipodi:nodetypes="csccsc" />
+  <g
+     class="nf-metro-station-group"
+     data-node-id="mafft"
+     data-node-cx="546.0"
+     data-node-cy="1135.5"
+     data-node-r="6.0"
+     data-node-groups="main"
+     data-node-region="phylogeny"
+     data-node-w="12.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g60"
+     transform="translate(-115.49359,-373.82788)">
+    <rect
+       x="540.01947"
+       y="1129.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="mafft"
+       data-station-lines="main"
+       data-station-label="Multiple sequence alignment (MAFFT)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect60" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="trimal"
+     data-node-cx="546.0"
+     data-node-cy="1175.5"
+     data-node-r="6.0"
+     data-node-groups="main"
+     data-node-region="phylogeny"
+     data-node-w="12.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g61"
+     transform="translate(-115.49359,-373.82788)">
+    <rect
+       x="540.01947"
+       y="1169.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="trimal"
+       data-station-lines="main"
+       data-station-label="Alignment trimming (trimAl)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect61" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="mafft"
+     data-node-cx="546.0"
+     data-node-cy="1135.5"
+     data-node-r="6.0"
+     data-node-groups="main"
+     data-node-region="phylogeny"
+     data-node-w="12.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g60-4"
+     transform="translate(-21.474121,-253.82788)">
+    <rect
+       x="540.01947"
+       y="1129.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="mafft"
+       data-station-lines="main"
+       data-station-label="Multiple sequence alignment (MAFFT)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect60-2" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="trimal"
+     data-node-cx="546.0"
+     data-node-cy="1175.5"
+     data-node-r="6.0"
+     data-node-groups="main"
+     data-node-region="phylogeny"
+     data-node-w="12.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g61-3"
+     transform="translate(-21.474121,-253.82788)">
+    <rect
+       x="540.01947"
+       y="1169.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="trimal"
+       data-station-lines="main"
+       data-station-label="Alignment trimming (trimAl)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect61-2" />
+  </g>
+  <g
+     id="g16"
+     transform="translate(0,-225.82788)">
+    <rect
+       x="330.50641"
+       y="1101.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="concat_alignments"
+       data-station-lines="main"
+       data-station-label="Concatenate trimmed alignments (PhyKIT)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect62" />
+    <rect
+       x="330.50641"
+       y="1141.5"
+       width="12"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="iqtree_supermatrix"
+       data-station-lines="main"
+       data-station-label="Maximum-likelihood supermatrix tree (IQ-TREE)"
+       data-section-id="phylogeny"
+       data-section-name="Alignment and phylogenomic inference"
+       id="rect63" />
+  </g>
+  <g
+     id="g36"
+     transform="translate(171.84234,-271.82788)">
+    <text
+       x="535.01947"
+       y="1033.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text92">Multiple sequence alignment (MAFFT)</text>
+    <text
+       x="535.01947"
+       y="1033.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="mafft"
+       class="nf-metro-station-label"
+       id="text93">Multiple sequence alignment (MAFFT)</text>
+  </g>
+  <g
+     id="g37"
+     transform="translate(106.70953,-271.82788)">
+    <text
+       x="535.01947"
+       y="1073.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text98">Alignment trimming (trimAl)</text>
+    <text
+       x="535.01947"
+       y="1073.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="trimal"
+       class="nf-metro-station-label"
+       id="text99">Alignment trimming (trimAl)</text>
+  </g>
+  <g
+     id="g38"
+     transform="translate(-480.67316,-351.82788)">
+    <text
+       x="651.03894"
+       y="1233.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text106"
+       style="text-align:start;text-anchor:start">Gene trees (IQ-TREE)</text>
+    <text
+       x="651.03894"
+       y="1233.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="iqtree_gene"
+       class="nf-metro-station-label"
+       id="text107"
+       style="text-align:start;text-anchor:start">Gene trees (IQ-TREE)</text>
+  </g>
+  <rect
+     x="518.54535"
+     y="875.67212"
+     width="12"
+     height="12"
+     rx="6"
+     ry="6"
+     fill="#ffffff"
+     stroke="#333333"
+     stroke-width="2"
+     class="nf-metro-station"
+     data-station-id="iqtree_gene"
+     data-station-lines="main"
+     data-station-label="Infer gene trees (IQ-TREE)"
+     data-section-id="phylogeny"
+     data-section-name="Alignment and phylogenomic inference"
+     id="rect64" />
+  <g
+     id="g17"
+     transform="translate(0,-145.82788)">
+    <text
+       x="549.82812"
+       y="1027.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text102"
+       style="text-align:start;text-anchor:start">Concatenate alignments (PhyKIT)</text>
+    <text
+       x="549.82812"
+       y="1027.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="concat_alignments"
+       class="nf-metro-station-label"
+       id="text103"
+       style="text-align:start;text-anchor:start">Concatenate alignments (PhyKIT)</text>
+  </g>
+  <g
+     id="g14"
+     transform="translate(-20,-146.0654)">
+    <text
+       x="571"
+       y="1067.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="end"
+       dominant-baseline="central"
+       id="text110"
+       style="text-align:start;text-anchor:start">Maximum-likelihood tree (IQ-TREE)</text>
+    <text
+       x="571"
+       y="1067.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="end"
+       dominant-baseline="central"
+       data-station-id="iqtree_supermatrix"
+       class="nf-metro-station-label"
+       id="text111"
+       style="text-align:start;text-anchor:start">Maximum-likelihood tree (IQ-TREE)</text>
+  </g>
+  <g
+     id="g39"
+     transform="translate(-523.46613,-352.06539)">
+    <text
+       x="685.21472"
+       y="1273.5"
+       font-size="14px"
+       fill="#ffffff"
+       stroke="#ffffff"
+       stroke-width="3"
+       stroke-linejoin="round"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       aria-hidden="true"
+       class="nf-metro-label-halo"
+       text-anchor="start"
+       dominant-baseline="central"
+       id="text114"
+       style="text-align:start;text-anchor:start">Species tree (ASTRAL)</text>
+    <text
+       x="685.21472"
+       y="1273.5"
+       font-size="14px"
+       fill="#333333"
+       font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+       font-weight="bold"
+       text-anchor="start"
+       dominant-baseline="central"
+       data-station-id="astral"
+       class="nf-metro-station-label"
+       id="text115"
+       style="text-align:start;text-anchor:start">Species tree (ASTRAL)</text>
+  </g>
+  <path
+     d="M 426.52588,428.61765 V 602.13439"
+     stroke="#0570b0"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-outgroup_species"
+     data-line-id="outgroup_species"
+     id="path24-7-8"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="M 430.52588,430.55541 V 606.17606"
+     stroke="#2db572"
+     stroke-width="2.99999"
+     stroke-linecap="round"
+     class="metro-line-focal_taxid"
+     data-line-id="focal_taxid"
+     id="path32-6-3"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="M 434.52588,425.50001 V 602.13439"
+     stroke="#e63946"
+     stroke-width="3"
+     stroke-linecap="round"
+     class="metro-line-focal_species"
+     data-line-id="focal_species"
+     id="path40-14-7"
+     sodipodi:nodetypes="cc" />
+  <g
+     class="nf-metro-station-group"
+     data-node-id="candidate_datasets"
+     data-node-cx="895.1"
+     data-node-cy="640.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,main,outgroup_species,user_data"
+     data-node-region="data_acquisition"
+     data-node-w="28.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g55"
+     transform="translate(-464.57892,-214)">
+    <rect
+       x="881.1048"
+       y="634"
+       width="28"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="candidate_datasets"
+       data-station-lines="focal_species,focal_taxid,main,outgroup_species,user_data"
+       data-station-label="Candidate BUSCO datasets"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect55" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="candidate_datasets"
+     data-node-cx="895.1"
+     data-node-cy="640.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,main,outgroup_species,user_data"
+     data-node-region="data_acquisition"
+     data-node-w="28.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g55-8"
+     transform="translate(-464.57892,-113.38617)">
+    <rect
+       x="881.1048"
+       y="634"
+       width="28"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="candidate_datasets"
+       data-station-lines="focal_species,focal_taxid,main,outgroup_species,user_data"
+       data-station-label="Candidate BUSCO datasets"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect55-7" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="candidate_datasets"
+     data-node-cx="895.1"
+     data-node-cy="640.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,main,outgroup_species,user_data"
+     data-node-region="data_acquisition"
+     data-node-w="28.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g55-9"
+     transform="translate(-464.57892,-73.386169)">
+    <rect
+       x="881.1048"
+       y="634"
+       width="28"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="candidate_datasets"
+       data-station-lines="focal_species,focal_taxid,main,outgroup_species,user_data"
+       data-station-label="Candidate BUSCO datasets"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect55-8" />
+  </g>
+  <g
+     class="nf-metro-station-group"
+     data-node-id="candidate_datasets"
+     data-node-cx="895.1"
+     data-node-cy="640.0"
+     data-node-r="6.0"
+     data-node-groups="focal_species,focal_taxid,main,outgroup_species,user_data"
+     data-node-region="data_acquisition"
+     data-node-w="28.0"
+     data-node-h="12.0"
+     data-node-rx="6.0"
+     id="g55-9-0"
+     transform="translate(-464.57892,-33.386169)">
+    <rect
+       x="881.1048"
+       y="634"
+       width="28"
+       height="12"
+       rx="6"
+       ry="6"
+       fill="#ffffff"
+       stroke="#333333"
+       stroke-width="2"
+       class="nf-metro-station"
+       data-station-id="candidate_datasets"
+       data-station-lines="focal_species,focal_taxid,main,outgroup_species,user_data"
+       data-station-label="Candidate BUSCO datasets"
+       data-section-id="data_acquisition"
+       data-section-name="Collect candidate datasets"
+       id="rect55-8-2" />
+  </g>
+</svg>

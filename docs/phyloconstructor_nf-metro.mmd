@@ -1,0 +1,84 @@
+%%metro title: PhyloConstructor
+%%metro style: light
+
+%%metro line: focal_species | Studied species | #e63946
+%%metro line: focal_taxid | Studied taxID taxon | #2db572
+%%metro line: outgroup_species | Outgroup species | #0570b0
+%%metro line: main | Main workflow | #686868
+
+%%metro grid: data_acquisition | 0,0,1,3
+%%metro grid: busco_analysis   | 0,1,1,3
+%%metro grid: phylogeny        | 0,2,1,3
+
+
+subgraph data_acquisition [Collect candidate datasets]
+    %%metro direction: TB
+
+    user_proteomes[User-provided proteomes]
+
+    download_uniprot[Download UniProt proteomes]
+    download_ncbi_proteomes[Download NCBI proteomes]
+    download_ncbi_assemblies[Download NCBI genome assemblies]
+
+    download_tsa[Download TSA transcriptomes]
+    download_sra[Download SRA sequencing reads]
+    rnaspades[Assemble transcripts (rnaSPAdes)]
+    filter_transcripts[Filter and dereplicate transcripts (≥300 bp, CD-HIT-EST)]
+    transdecoder[Predict protein-coding sequences (TransDecoder)]
+
+    candidate_datasets[Candidate datasets for BUSCO assessment]
+
+    user_proteomes -->|focal_species,outgroup_species| candidate_datasets
+
+    download_uniprot -->|focal_species,focal_taxid,outgroup_species| candidate_datasets
+    download_ncbi_proteomes -->|focal_species,focal_taxid,outgroup_species| candidate_datasets
+    download_ncbi_assemblies -->|focal_species,focal_taxid,outgroup_species| candidate_datasets
+
+    download_tsa -->|focal_species,focal_taxid,outgroup_species| filter_transcripts
+
+    download_sra -->|focal_species,focal_taxid,outgroup_species| rnaspades
+    rnaspades -->|focal_species,focal_taxid,outgroup_species| filter_transcripts
+
+    filter_transcripts -->|focal_species,focal_taxid,outgroup_species| transdecoder
+    transdecoder -->|focal_species,focal_taxid,outgroup_species| candidate_datasets
+end
+
+
+subgraph busco_analysis [BUSCO assessment and dataset selection]
+    %%metro direction: TB
+
+    run_busco[Assess completeness (BUSCO)]
+    select_busco_sequences[Select complete BUSCO hits (single-copy or all)]
+    select_best_dataset[Select best BUSCO hit per species and orthologous gene family]
+    select_orthogroups[Filter species and ortholog families by BUSCO completeness and taxon occupancy]
+
+    run_busco -->|focal_species,focal_taxid,outgroup_species| select_busco_sequences
+    select_busco_sequences -->|focal_species,focal_taxid,outgroup_species| select_best_dataset
+    select_best_dataset -->|main| select_orthogroups
+end
+
+
+subgraph phylogeny [Alignment and phylogenomic inference]
+    %%metro direction: TB
+
+    mafft[Multiple sequence alignment (MAFFT)]
+    trimal[Alignment trimming (trimAl)]
+
+    iqtree_gene[Gene trees (IQ-TREE)]
+    astral[Species tree (ASTRAL)]
+
+    concat_alignments[Concatenate alignments (PhyKIT)]
+    iqtree_supermatrix[Maximum-likelihood tree (IQ-TREE)]
+
+    mafft -->|main| trimal
+
+    trimal -->|main| iqtree_gene
+    iqtree_gene -->|main| astral
+
+    trimal -->|main| concat_alignments
+    concat_alignments -->|main| iqtree_supermatrix
+end
+
+%% Inter-section edges
+candidate_datasets -->|focal_species,focal_taxid,outgroup_species| run_busco
+select_orthogroups -->|main| mafft
